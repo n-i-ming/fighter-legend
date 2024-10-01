@@ -53,6 +53,9 @@ addLayer("tree-tab",{
         else{
             document.getElementById("text")["style"]["left"]=(document.getElementsByClassName("upgTable")[0].getBoundingClientRect().width-document.getElementById("text").getBoundingClientRect().width)/2+"px"
         }
+        while(player.toggle.length<100){
+            player.toggle.push(0)
+        }
         if(player.tmtmtm==0){
             player.tmtmtm=Date.now()/1e3
         }
@@ -123,27 +126,29 @@ addLayer("tree-tab",{
                 str+="<button onclick='DealExchangeCode()'>确认</button>"
                 str+="<br><br>"
                 if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
-                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>"
+                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>"
                 }
                 else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
-                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>"
+                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>"
                 }
                 else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
-                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>"
+                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>"
                 }
                 else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
-                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>"
+                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>"
                 }
                 else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
-                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>"
+                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>"
                 }
             }
             else if(player.nowBigTab=="设置"){
                 str+="经验显示<button onclick='player.toggle[0]=!player.toggle[0]'>"+(player.toggle[0]==0?"开":"关")+"</button><br><br>"
                 str+="金钱显示<button onclick='player.toggle[1]=!player.toggle[1]'>"+(player.toggle[1]==0?"开":"关")+"</button><br><br>"
                 str+="材料显示<button onclick='player.toggle[2]=!player.toggle[2]'>"+(player.toggle[2]==0?"开":"关")+"</button><br><br>"
-                str+="伤害显示<button onclick='player.toggle[3]=!player.toggle[3]'>"+(player.toggle[3]==0?"开":"关")+"</button><br><br>"
-                str+="动画显示<button onclick='player.toggle[4]=!player.toggle[4]'>"+(player.toggle[4]==0?"开":"关")+"</button><br><br>"
+                str+="普通攻击伤害显示<button onclick='player.toggle[3]=!player.toggle[3]'>"+(player.toggle[3]==0?"开":"关")+"</button><br><br>"
+                str+="普通攻击动画显示<button onclick='player.toggle[4]=!player.toggle[4]'>"+(player.toggle[4]==0?"开":"关")+"</button><br><br>"
+                str+="技能攻击伤害显示<button onclick='player.toggle[3]=!player.toggle[3]'>"+(player.toggle[5]==0?"开":"关")+"</button><br><br>"
+                str+="技能攻击动画显示<button onclick='player.toggle[4]=!player.toggle[4]'>"+(player.toggle[6]==0?"开":"关")+"</button><br><br>"
             }
             else if(player.nowBigTab=="武器"){
                 str+="拥有陨铁 "+format(player.iron,0)+"<br>"+"拥有金钱 "+format(player.money,0)
@@ -152,6 +157,12 @@ addLayer("tree-tab",{
             else if(player.nowBigTab=="盔甲"){
                 str+="拥有陨铁 "+format(player.iron,0)+"<br>"+"拥有金钱 "+format(player.money,0)
                 str+="<br><br>"
+            }
+            else if(player.nowBigTab=="技能"){
+                str+="拥有技能书 "+format(player.skillbook,0)+"<br>"
+                str+="技能书从200级怪物起开始掉落<br>"
+                str+="技能触发概率 "+player.skillLuck+"%<br>"
+                str+="<br>"
             }
             return str
         }],
@@ -185,6 +196,19 @@ addLayer("tree-tab",{
                 str+="升阶需要 陨铁×"+format(CalcClothNeed(1))+" <button onclick='UpgradeCloth(0)'>升阶</button><br>"
                 str+="下一阶 "+clothName[Math.min(player.clothLv[0]+1,99)]+(player.clothLv[0]+1>=99?"·"+player.clothLv[0]+1-99+"阶":"")+"<br>"
                 str+="<br>每一阶令盔甲增益×1.5<br>每一级令盔甲增益×1.01"
+            }
+            else if(player.nowBigTab=="技能"){
+                str+="<table>"
+                for(let i=0;i<skillName.length;i++){
+                    str+="<tr>"
+                    str+="<td style='width:150px;text-align:left'>"+skillName[i]+"·"+player.skillLv[i]+"阶 "
+                    str+="<text style='color:"+skillColor[i]+"'>■</td>"
+                    str+="<td style='width:150px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:100px'></td>"
+                    str+="<td style='width:250px;text-align:right'>消耗 技能书×"+format(CalcSkillNeed(i),0)+" <button onclick='UpgradeSkill("+i+")'>升阶</button>"
+                    str+="</tr>"
+                }
+                str+="</table>"
             }
             return str
         }],

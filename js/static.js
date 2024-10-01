@@ -3,22 +3,23 @@ function addedPlayerData() { return {
     themeId:0,tmtmtm:0,
     seed1:Math.floor(Math.random()*4294967296),seed2:Math.floor(Math.random()*4294967296),
     seed3:Math.floor(Math.random()*4294967296),seed4:Math.floor(Math.random()*4294967296),
-    nowBigTab:"属性",fightSub:0,dropLuck:1,expmoneyMul:1,exchangeCodeList:[],toggle:[0,0,0,0,0],
+    nowBigTab:"属性",fightSub:0,dropLuck:1,expmoneyMul:1,exchangeCodeList:[],toggle:[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    skillLuck:1,
     lv:0,hp:n(0),atk:n(0),hpnow:n(0),
     atkSpeed:5,atkTime:0,
     exp:n(0),money:n(0),
 
     monsterLv:0,monsterHp:n(1000),monsterAtk:n(1),
     monsterAtkSpeed:2,monsterAtkTime:0,
-    iron:n(0),
+    iron:n(0),skillbook:n(0),
 
-    weaponLv:[0,0],clothLv:[0,0],
+    weaponLv:[0,0],clothLv:[0,0],skillLv:[0,0,0,0,0]
 }}
 
 const subTabList=[
-    "属性","兑换","设置","战斗","武器","盔甲"
+    "属性","兑换","设置","战斗","武器","盔甲","技能"
 ]
-const things=[["陨铁",0,"iron"]]
+const things=[["陨铁",0,"iron"],["技能书",200,"skillbook"]]
 const monsterName=[
     "野猪","小狼","兔子","野兔","狐狸","山鸡","鹿","猫头鹰","野狼","巨鼠","蝙蝠","狼蛛","血狼","风暴鹰","瘟疫鼠","毒蛇","石怪","狼人","狼骑士","巨型蟾蜍","暴躁牛","烈焰蝙蝠",
     "狼群领主","冰霜熊","黑色巨龙","迷雾幻影","幽灵骷髅","狂战士","黑暗法师","血色骑士","地狱犬","鬼火","深渊裂缝","战斗犀牛","巨型蜘蛛","亡灵法师","瘟疫精灵","风暴巨人","剑齿虎",
@@ -43,4 +44,10 @@ const clothName=[
     "无畏盔甲","猎手护甲","混沌斗篷","光明铠甲","天选护甲","秘银盔甲","圣光铠甲","恶魔护甲","刀锋护甲","剑圣铠甲","地狱护甲","战斗法袍","终焉之甲","复仇者护甲","征服者盔甲",
     "杀戮护甲","绝境护甲","黑暗斗篷","深渊护甲","冥界铠甲","魔力铠甲","巨兽护甲","天罚铠甲","雷霆护甲","死灵护甲","月影斗篷","狂怒护甲","风之护甲","狩猎盔甲","幽冥铠甲",
     "末日护甲","星空护甲","无畏斗篷","灵魂护甲","暗影护甲","血腥盔甲","炼狱斗篷","毁灭护甲","天火盔甲","猎手斗篷","绝望之甲","永恒护甲","禁忌之甲","英雄护甲","巫师法袍","圣坛护甲"
+]
+const skillName=[
+    "金刚断","木刃斩","水流袭","火焰炎","土岩击",
+]
+const skillColor=[
+    "yellow","lime","lightblue","red","brown"
 ]

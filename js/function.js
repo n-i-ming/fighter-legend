@@ -11,30 +11,36 @@ function CalcAttribute(){
     player.atkSpeed=5
     player.dropLuck=1
     player.expmoneyMul=1
+    player.skillLuck=1
     if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
         player.atkSpeed+=25
         player.dropLuck*=10
         player.expmoneyMul*=3.5
+        player.skillLuck+=9
     }
     else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
         player.atkSpeed+=20
         player.dropLuck*=6
         player.expmoneyMul*=2.5
+        player.skillLuck+=5
     }
     else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
         player.atkSpeed+=10
         player.dropLuck*=4
         player.expmoneyMul*=2
+        player.skillLuck+=3
     }
     else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
         player.atkSpeed+=5
         player.dropLuck*=3
         player.expmoneyMul*=1.5
+        player.skillLuck+=2
     }
     else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
         player.atkSpeed+=5
         player.dropLuck*=2
         player.expmoneyMul*=1.2
+        player.skillLuck+=1
     }
 }
 // var dropList=[[100,200,"金钱",n(1e5),0.5]]
@@ -48,7 +54,7 @@ function ResetFight(){
     player.monsterAtk=n(1.1).pow(player.monsterLv).mul(1)
     player.hpnow=player.hp
 }
-function DealDamage(str,dmg){
+function DealDamage(str,dmg,extra){
     if(str=="me"){
         dropList.push([random()*550,random()*450,"经验",n(10).mul(player.monsterLv+1).mul(player.expmoneyMul),0])
         player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul))
@@ -62,7 +68,7 @@ function DealDamage(str,dmg){
             }
         }
     }
-    damageList.push([str,random()*(-150)+50,random()*(-100)-20,n(dmg),0])
+    damageList.push([str,random()*(-150)+50,random()*(-100)-20,n(dmg),0,extra])
     if(str=="me"){
         player.monsterHp=player.monsterHp.sub(dmg)
         if(player.monsterHp.lt(0)){
@@ -101,8 +107,8 @@ function DealFight(dif){
     for(let i=0;i<damageDrawList.length;i++){
         damageDrawList[i][1]+=dif/1.2
         if(damageDrawList[i][1]>=1){
-            let damage=(damageDrawList[i][0]=="me"?player.atk:player.monsterAtk)
-            DealDamage(damageDrawList[i][0],damage)
+            let damage=(damageDrawList[i][0]=="me"?player.atk:player.monsterAtk).mul(damageDrawList[i][4])
+            DealDamage(damageDrawList[i][0],damage,[damageDrawList[i][2],damageDrawList[i][3]])
             damageDrawList.splice(i,1)
             i--
         }
@@ -124,11 +130,22 @@ function DealFight(dif){
 
     while(player.atkTime>=1/player.atkSpeed){
         player.atkTime-=1/player.atkSpeed
-        damageDrawList.push(["me",0])
+        let hs=false
+        for(let i=0;i<skillName.length;i++){
+            if(player.skillLv[i]>=1){
+                if(random()<=player.skillLuck/100){
+                    hs=true
+                    damageDrawList.push(["me",0,"skill",i,n(5).mul(n(1.1).pow(player.skillLv[i]))])
+                }
+            }
+        }
+        if(hs==false){
+            damageDrawList.push(["me",0,"normal",0,n(1)])
+        }
     }
     while(player.monsterAtkTime>=1/player.monsterAtkSpeed){
         player.monsterAtkTime-=1/player.monsterAtkSpeed
-        damageDrawList.push(["monster",0])
+        damageDrawList.push(["monster",0,"normal",0,n(1)])
     }
 }
 function DrawFight(){
@@ -163,18 +180,20 @@ function DrawFight(){
     for(let i=0;i<damageList.length;i++){
         let x=document.getElementById("mycanvas").getBoundingClientRect().x+damageList[i][1]+(damageList[i][0]=="me"?600:0)
         let y=document.getElementById("mycanvas").getBoundingClientRect().y+damageList[i][2]+500
-        if((player.toggle[3]==0))
+        if((damageList[i][5][0]=="skill"?player.toggle[5]==0:player.toggle[3]==0))
         str+=`<div style='
+        color:${damageList[i][5][0]=="skill"?skillColor[damageList[i][5][1]]:"red"};
         opacity:${Calc(damageList[i][4],2)};
-        color:red;position:absolute;left:${x}px;top:${y}px'>-${format(damageList[i][3],0)}</div>`
+        position:absolute;left:${x}px;top:${y}px'>-${format(damageList[i][3],0)}${damageList[i][5][0]=="skill"?"("+skillName[damageList[i][5][1]]+")":""}</div>`
     }
     for(let i=0;i<damageDrawList.length;i++){
         let x=document.getElementById("mycanvas").getBoundingClientRect().x+(damageDrawList[i][0]=="me"?50:550)+(damageDrawList[i][0]=="me"?500:-500)*damageDrawList[i][1]
         let y=document.getElementById("mycanvas").getBoundingClientRect().y+500+10+(damageDrawList[i][0]=="me"?0:-15)
-        if((player.toggle[4]==0))
+        if((damageDrawList[i][2]=="skill"?player.toggle[6]==0:player.toggle[4]==0))
         str+=`<div style='
-        background-color:${damageDrawList[i][0]=="me"?"blue":"red"};position:absolute;left:${x}px;top:${y}px;
-        height:10px;width:10px;border-radius:10px'></div>`
+        background-color:${damageDrawList[i][0]=="me"?damageDrawList[i][2]=="skill"?skillColor[damageDrawList[i][3]]:"blue"
+            :"red"};position:absolute;left:${x}px;top:${y}px;
+        height:10px;width:10px;border-radius:${damageDrawList[i][2]=="skill"?0:10}px'></div>`
     }
     return str
 }
@@ -197,6 +216,11 @@ function CalcExpNeed(x){
     if(x<=5000)return n(500000)
     if(x<=7500)return n(1e6)
     if(x<=10000)return n(2e6)
+    if(x<=15000)return n(3e6)
+    if(x<=20000)return n(4e6)
+    if(x<=25000)return n(5e6)
+    if(x<=30000)return n(7.5e6)
+    if(x<=40000)return n(1e7)
     return n(1e308)
 }
 function AutoUpgrade(){
@@ -289,6 +313,19 @@ function UpgradeCloth(type){
                 break
             }
         }
+    }
+}
+function CalcSkillNeed(id){
+    return n(30).mul(n(1.2).pow(player.skillLv[id]))
+}
+function UpgradeSkill(id){
+    if(player.skillbook.gte(CalcSkillNeed(id))){
+        logs.push("消耗 技能书×"+format(CalcSkillNeed(id))+" 成功升阶技能")
+        player.skillbook=player.skillbook.sub(CalcSkillNeed(id))
+        player.skillLv[id]+=1
+    }
+    else{
+        logs.push("技能书不足")
     }
 }
 function sha256(message) {
