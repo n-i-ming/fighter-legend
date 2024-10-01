@@ -88,8 +88,8 @@ function ThingList(){
 }
 function DealGet(dif){
     let tms=Math.floor(dif*player.atkSpeed)
-    player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul))
-    player.money=player.money.add(n(player.atk).mul(player.expmoneyMul))
+    player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(tms))
+    player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms))
     let ls=ThingList()
     for(let i=0;i<ls.length;i++){
         player[things[ls[i][0]][2]]=player[things[ls[i][0]][2]].add(n(ls[i][1]).mul(Math.floor(tms*5*player.dropLuck/1000)))
