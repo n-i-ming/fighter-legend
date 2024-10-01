@@ -221,6 +221,17 @@ function CalcExpNeed(x){
     if(x<=25000)return n(5e6)
     if(x<=30000)return n(7.5e6)
     if(x<=40000)return n(1e7)
+    if(x<=50000)return n(1.2e7)
+    if(x<=60000)return n(1.4e7)
+    if(x<=70000)return n(1.6e7)
+    if(x<=80000)return n(1.8e7)
+    if(x<=90000)return n(2e7)
+    if(x<=1e5)return n(2.5e7)
+    if(x<=1.1e5)return n(3e7)
+    if(x<=1.2e5)return n(3.5e7)
+    if(x<=1.3e5)return n(4e7)
+    if(x<=1.4e5)return n(4.5e7)
+    if(x<=1.5e5)return n(5e7)
     return n(1e308)
 }
 function AutoUpgrade(){
