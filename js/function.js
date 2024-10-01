@@ -316,7 +316,7 @@ function UpgradeCloth(type){
     }
 }
 function CalcSkillNeed(id){
-    return n(30).mul(n(1.2).pow(player.skillLv[id]))
+    return n(30).mul(n(1.2).pow(player.skillLv[id])).floor()
 }
 function UpgradeSkill(id){
     if(player.skillbook.gte(CalcSkillNeed(id))){
