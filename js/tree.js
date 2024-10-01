@@ -61,8 +61,10 @@ addLayer("tree-tab",{
         }
         player.devSpeed=1
         let dif=(Date.now()/1e3-player.tmtmtm)
-        // dif*=1000
+        // dif*=0.1
         player.tmtmtm=Date.now()/1e3
+        player.kuangbaoTime=Math.max(player.kuangbaoTime-dif,0)
+        player.zhendangTime=Math.max(player.zhendangTime-dif,0)
         AutoUpgrade()
         CalcAttribute()
         if(dif<0.1){
@@ -148,8 +150,10 @@ addLayer("tree-tab",{
                 str+="材料显示<button onclick='player.toggle[2]=!player.toggle[2]'>"+(player.toggle[2]==0?"开":"关")+"</button><br><br>"
                 str+="普通攻击伤害显示<button onclick='player.toggle[3]=!player.toggle[3]'>"+(player.toggle[3]==0?"开":"关")+"</button><br><br>"
                 str+="普通攻击动画显示<button onclick='player.toggle[4]=!player.toggle[4]'>"+(player.toggle[4]==0?"开":"关")+"</button><br><br>"
-                str+="技能攻击伤害显示<button onclick='player.toggle[3]=!player.toggle[3]'>"+(player.toggle[5]==0?"开":"关")+"</button><br><br>"
-                str+="技能攻击动画显示<button onclick='player.toggle[4]=!player.toggle[4]'>"+(player.toggle[6]==0?"开":"关")+"</button><br><br>"
+                str+="技能攻击伤害显示<button onclick='player.toggle[5]=!player.toggle[5]'>"+(player.toggle[5]==0?"开":"关")+"</button><br><br>"
+                str+="技能攻击动画显示<button onclick='player.toggle[6]=!player.toggle[6]'>"+(player.toggle[6]==0?"开":"关")+"</button><br><br>"
+                str+="神兽攻击伤害显示<button onclick='player.toggle[7]=!player.toggle[7]'>"+(player.toggle[7]==0?"开":"关")+"</button><br><br>"
+                str+="神兽攻击动画显示<button onclick='player.toggle[8]=!player.toggle[8]'>"+(player.toggle[8]==0?"开":"关")+"</button><br><br>"
             }
             else if(player.nowBigTab=="武器"){
                 str+="拥有陨铁 "+format(player.iron,0)+"<br>"+"拥有金钱 "+format(player.money,0)
@@ -163,6 +167,12 @@ addLayer("tree-tab",{
                 str+="拥有技能书 "+format(player.skillbook,0)+"<br>"
                 str+="技能书从200级怪物起开始掉落<br>"
                 str+="技能触发概率 "+player.skillLuck+"%<br>"
+                str+="<br>"
+            }
+            else if(player.nowBigTab=="神兽"){
+                str+="拥有兽符 "+format(player.animalrune,0)+"<br>"
+                str+="兽符从300级怪物起开始掉落<br>"
+                str+="神兽技能触发概率 "+player.skillLuck+"%<br>"
                 str+="<br>"
             }
             return str
@@ -210,6 +220,29 @@ addLayer("tree-tab",{
                     str+="</tr>"
                 }
                 str+="</table>"
+            }
+            else if(player.nowBigTab=="神兽"){
+                str+="<table>"
+                for(let i=0;i<animalName.length;i++){
+                    str+="<tr>"
+                    str+="<td style='width:150px;text-align:left'>"+animalName[i]+"·"+player.animalLv[i]+"阶 "
+                    str+="<text style='color:"+animalColor[i]+"'>▶</text></td>"
+                    str+="<td style='width:150px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:100px'></td>"
+                    str+="<td style='width:250px;text-align:right'>消耗 兽符×"+format(CalcAnimalNeed(i),0)+" <button onclick='UpgradeAnimal("+i+")'>升阶</button>"
+                    str+="</tr>"
+                }
+                str+="</table>"
+                str+="<br>神兽攻击速度为本体的五分之一<br><br>"
+                str+="<table>"
+                str+="<tr><td style='width:200px'>青龙特殊技能-狂暴 <text style='color:"+animalColor[0]+";text-shadow:0 0 10px "+animalColor[0]+"'>▶</text></td>"
+                str+="<td style='text-align:left'>接下来3秒内 , 玩家攻击×5</text></tr>"
+                str+="<tr><td style='width:200px'>白虎特殊技能-震荡 <text style='color:"+animalColor[1]+";text-shadow:0 0 10px "+animalColor[1]+"'>▶</text></td>"
+                str+="<td style='text-align:left'>接下来2秒内 , 怪物停止攻击</text></tr>"
+                str+="<tr><td style='width:200px'>朱雀特殊技能-治愈 <text style='color:"+animalColor[2]+";text-shadow:0 0 10px "+animalColor[2]+"'>▶</text></td>"
+                str+="<td style='text-align:left'>回复最大生命值的20%</text></tr>"
+                str+="<tr><td style='width:200px'>白虎特殊技能-坚甲 <text style='color:"+animalColor[3]+";text-shadow:0 0 10px "+animalColor[3]+"'>▶</text></td>"
+                str+="<td style='text-align:left'>抵消离玩家最近的一枚子弹</text></tr>"
             }
             return str
         }],
