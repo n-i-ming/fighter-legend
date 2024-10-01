@@ -90,6 +90,7 @@ addLayer("tree-tab",{
             if(player.nowBigTab=='属性'){
                 str+="<table>"
                 str+="<tr><td style='text-align:left;width:60px'>等级</td><td style='text-align:left;width:200px'>"+format(player.lv,0)+"</td></tr>"
+                str+="<tr><td style='text-align:left' colspan=2>每级独立提升攻击、生命0.1%</td></tr>"
                 str+="<tr><td style='text-align:left;width:60px'>经验</td><td style='text-align:left;width:200px'>"+format(player.exp,0)+"/"+format(CalcExpNeed(player.lv,0))+"</td></tr>"
                 str+="<tr><td style='text-align:left;width:60px'>金钱</td><td style='text-align:left;width:200px'>"+format(player.money,0)+"</td></tr>"
                 str+="<tr><td style='text-align:left;width:60px'>攻击</td><td style='text-align:left;width:200px'>"+format(player.atk,0)+"</td></tr>"
