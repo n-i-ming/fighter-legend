@@ -234,7 +234,11 @@ function CalcWeaponNeed(type){
         return n(10000).mul(n(1.015).pow(player.weaponLv[1]))
     }
     else{
-        return n(10).mul(n(1.2).pow(player.weaponLv[0])).floor()
+        let x=player.weaponLv[0]
+        if(x>=30)x=Math.pow(x/30,0.8)*30
+        if(x>=50)x=Math.pow(x/50,0.65)*50
+        if(x>=75)x=Math.pow(x/75,0.5)*75
+        return n(10).mul(n(1.2).pow(x)).floor()
     }
 }
 function UpgradeWeapon(type){
@@ -277,7 +281,11 @@ function CalcClothNeed(type){
         return n(10000).mul(n(1.015).pow(player.clothLv[1]))
     }
     else{
-        return n(10).mul(n(1.2).pow(player.clothLv[0])).floor()
+        let x=player.clothLv[0]
+        if(x>=30)x=Math.pow(x/30,0.8)*30
+        if(x>=50)x=Math.pow(x/50,0.65)*50
+        if(x>=75)x=Math.pow(x/75,0.5)*75
+        return n(10).mul(n(1.2).pow(x)).floor()
     }
 }
 function UpgradeCloth(type){
@@ -316,7 +324,11 @@ function UpgradeCloth(type){
     }
 }
 function CalcSkillNeed(id){
-    return n(30).mul(n(1.2).pow(player.skillLv[id])).floor()
+    let x=player.skillLv[id]
+    if(x>=25)x=Math.pow(x/25,0.8)*25
+    if(x>=40)x=Math.pow(x/40,0.65)*40
+    if(x>=60)x=Math.pow(x/60,0.5)*60
+    return n(30).mul(n(1.2).pow(x)).floor()
 }
 function UpgradeSkill(id){
     if(player.skillbook.gte(CalcSkillNeed(id))){
