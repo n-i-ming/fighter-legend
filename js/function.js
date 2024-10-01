@@ -370,7 +370,7 @@ function UpgradeCloth(type){
     else{
         while(1){
             if(player.money.gte(CalcClothNeed(0))){
-                logs.push("消耗 金钱×"+format(CalcClothNeed(0))+" 成功升级武器")
+                logs.push("消耗 金钱×"+format(CalcClothNeed(0))+" 成功升级盔甲")
                 player.money=player.money.sub(CalcClothNeed(0))
                 player.clothLv[1]+=1
             }
