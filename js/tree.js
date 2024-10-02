@@ -116,7 +116,7 @@ addLayer("tree-tab",{
                         str+="</tr>"
                     for(let i=0;i<ls.length;i++){
                         str+="<tr>"
-                        str+="<td style='width:100px;text-align:left'>"+things[ls[i][0]][0]+"×"+format(ls[i][1])+"</td>"
+                        str+="<td style='width:200px;text-align:left'>"+things[ls[i][0]][0]+"×"+format(ls[i][1])+"</td>"
                         str+="<td style='width:200px;text-align:right'>"+5*player.dropLuck+"/1000</td>"
                         str+="</tr>"
                     }
@@ -130,19 +130,19 @@ addLayer("tree-tab",{
                 str+="<button onclick='DealExchangeCode()'>确认</button>"
                 str+="<br><br>"
                 if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
-                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>签到收益提升至×2<br>签到间隔缩短至12h<br>"
+                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>签到收益提升至×2<br>签到间隔缩短至12h<br>破灭冷却缩短至1s<br>破灭效果翻倍<br>"
                 }
                 else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
-                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>签到收益提升至×1.5<br>签到间隔缩短至12h<br>"
+                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>签到收益提升至×1.5<br>签到间隔缩短至12h<br>破灭冷却缩短至2s<br>"
                 }
                 else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
-                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>签到收益提升至×1.5<br>"
+                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>签到收益提升至×1.5<br>破灭冷却缩短至3s<br>"
                 }
                 else if(player.exchangeCodeList.includes("dcc8111b8017e31dbd35ad4aad96be2ca3b83d3c901e52d4a95710542c71f81b")){
-                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>签到收益提升至×1.3<br>"
+                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>签到收益提升至×1.3<br>破灭冷却缩短至5s<br>"
                 }
                 else if(player.exchangeCodeList.includes("a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16")){
-                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>签到收益提升至×1.2<br>"
+                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>签到收益提升至×1.2<br>破灭冷却缩短至7s<br>"
                 }
             }
             else if(player.nowBigTab=="设置"){
@@ -155,6 +155,8 @@ addLayer("tree-tab",{
                 str+="技能攻击动画显示<button onclick='player.toggle[6]=!player.toggle[6]'>"+(player.toggle[6]==0?"开":"关")+"</button><br><br>"
                 str+="神兽攻击伤害显示<button onclick='player.toggle[7]=!player.toggle[7]'>"+(player.toggle[7]==0?"开":"关")+"</button><br><br>"
                 str+="神兽攻击动画显示<button onclick='player.toggle[8]=!player.toggle[8]'>"+(player.toggle[8]==0?"开":"关")+"</button><br><br>"
+                str+="破灭攻击伤害显示<button onclick='player.toggle[9]=!player.toggle[9]'>"+(player.toggle[9]==0?"开":"关")+"</button><br><br>"
+                str+="破灭攻击动画显示<button onclick='player.toggle[10]=!player.toggle[10]'>"+(player.toggle[10]==0?"开":"关")+"</button><br><br>"
             }
             else if(player.nowBigTab=="武器"){
                 str+="拥有陨铁 "+format(player.iron,0)+"<br>"+"拥有金钱 "+format(player.money,0)
@@ -186,6 +188,11 @@ addLayer("tree-tab",{
             else if(player.nowBigTab=="宝石"){
                 str+="拥有宝石碎片 "+format(player.gem,0)+"<br>"
                 str+="宝石碎片从500级怪物起开始掉落<br>"
+                str+="<br>"
+            }
+            else if(player.nowBigTab=="破灭"){
+                str+="拥有精钢 "+format(player.steel,0)+"<br>"
+                str+="精钢从800级怪物起开始掉落<br>"
                 str+="<br>"
             }
             return str
@@ -273,6 +280,14 @@ addLayer("tree-tab",{
                 +"<td style='width:250px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
                 str+="</table>"
                 str+="<br>每一阶宝石合成满以后提升对应属性1.5倍"
+            }
+            else if(player.nowBigTab=="破灭"){
+                str+="<table>"
+                str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.swordLv/10)+"阶·"+(player.swordLv-Math.floor(player.swordLv/10)*10)
+                +"级·破灭之刃</td><td style='width:150px;text-align:left'>攻击+"+format(n(1.1).pow(player.swordLv).sub(1).mul(100),0)+"%</td>"
+                +"<td style='width:250px;text-align:right'>消耗精钢×"+format(CalcSwordNeed(),0)+"</td><td><button onclick='UpgradeSword(1)'>连续升级</button></td></tr>"
+                str+="</table>"
+                str+="<br>每"+player.swordCD+"秒发射一道伤害值为怪物当前生命"+format(player.swordPower,1)+"%的剑气(不超过"+format(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100))+")"
             }
             return str
         }],
