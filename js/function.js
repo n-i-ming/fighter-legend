@@ -27,7 +27,7 @@ function CalcAttribute(){
     player.qiandaoMul=n(1.1)
     player.qiandaoCD=86400
     player.swordCD=10
-    player.swordPower=0.5*Math.floor(player.swordLv/10)
+    player.swordPower=Math.min(49.5,0.5*Math.floor(player.swordLv/10))
     if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
         player.atkSpeed+=25
         player.dropLuck*=10
@@ -310,9 +310,8 @@ function Calc(x,al){
 }
 function CalcNeed(xx){
     let x=xx
-    if(x>=30)x=Math.pow(x/30,0.8)*30
-    if(x>=50)x=Math.pow(x/50,0.65)*50
-    if(x>=75)x=Math.pow(x/75,0.5)*75
+    if(x>=30)x=Math.pow(x/30,0.75)*30
+    if(x>=60)x=Math.pow(x/60,0.5)*60
     return n(10).mul(n(1.2).pow(x)).floor()
 }
 function CalcExpNeed(x){
