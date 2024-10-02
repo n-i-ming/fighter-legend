@@ -82,10 +82,18 @@ var dropList=[]
 var damageList=[]
 var damageDrawList=[]
 function ResetFight(){
-    let x=player.monsterLv
-    if(x>=5000)x+=(x-5000)
-    player.monsterHp=n(1.1).pow(x).mul(1000)
-    player.monsterAtk=n(1.1).pow(x).mul(1)
+    let x=n(1.1).pow(Math.min(player.monsterLv,5000))
+    x=x.mul(n(1.2).pow(Math.max(0,Math.min(player.monsterLv-5000,5000))))
+    x=x.mul(n(1.5).pow(Math.max(0,Math.min(player.monsterLv-10000,5000))))
+    x=x.mul(n(2).pow(Math.max(0,Math.min(player.monsterLv-15000,5000))))
+    x=x.mul(n(2.5).pow(Math.max(0,Math.min(player.monsterLv-20000,5000))))
+    x=x.mul(n(3).pow(Math.max(0,Math.min(player.monsterLv-25000,5000))))
+    x=x.mul(n(3.5).pow(Math.max(0,Math.min(player.monsterLv-30000,5000))))
+    x=x.mul(n(4).pow(Math.max(0,Math.min(player.monsterLv-35000,5000))))
+    x=x.mul(n(4.5).pow(Math.max(0,Math.min(player.monsterLv-40000,5000))))
+    x=x.mul(n(5).pow(Math.max(0,Math.min(player.monsterLv-45000,10000000))))
+    player.monsterHp=x.mul(1000)
+    player.monsterAtk=x
     player.hpnow=player.hp
     player.kuangbaoTime=0
 }
