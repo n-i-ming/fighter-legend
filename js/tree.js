@@ -267,10 +267,10 @@ addLayer("tree-tab",{
                 str+="<table>"
                 str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.gemLv[0]/100+1)+"阶攻击宝石 ("+(player.gemLv[0]-Math.floor(player.gemLv[0]/100)*100)
                 +"/100)</td><td style='width:150px;text-align:left'>攻击+"+format(CalcGemMul(0),0)+"%</td>"
-                +"<td style='width:200px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(0),0)+"<button onclick='UpgradeGem(0,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(0,1)'>连续合成</button></td></tr>"
+                +"<td style='width:250px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(0),0)+"<button onclick='UpgradeGem(0,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(0,1)'>连续合成</button></td></tr>"
                 str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.gemLv[1]/100+1)+"阶生命宝石 ("+(player.gemLv[1]-Math.floor(player.gemLv[1]/100)*100)
                 +"/100)</td><td style='width:150px;text-align:left'>生命+"+format(CalcGemMul(1),0)+"%</td>"
-                +"<td style='width:200px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
+                +"<td style='width:250px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
                 str+="</table>"
                 str+="<br>每一阶宝石合成满以后提升对应属性1.5倍"
             }
