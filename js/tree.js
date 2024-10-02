@@ -228,6 +228,7 @@ addLayer("tree-tab",{
                     str+="<td style='width:150px;text-align:left'>"+skillName[i]+"·"+player.skillLv[i]+"阶 "
                     str+="<text style='color:"+skillColor[i]+"'>■</td>"
                     str+="<td style='width:150px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:150px;text-align:left'>攻击+"+format(player.skillLv[i]==0?0:n(50).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 技能书×"+format(CalcSkillNeed(i),0)+" <button onclick='UpgradeSkill("+i+")'>升阶</button>"
                     str+="</tr>"

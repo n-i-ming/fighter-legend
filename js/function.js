@@ -11,6 +11,9 @@ function CalcAttribute(){
     for(let i=0;i<4;i++){
         player.hp=player.hp.mul(n(1).add(player.animalLv[i]==0?0:n(0.5).mul(n(1.1).pow(player.animalLv[i]-1)),0))
     }
+    for(let i=0;i<5;i++){
+        player.atk=player.atk.mul(n(1).add(player.skillLv[i]==0?0:n(0.5).mul(n(1.1).pow(player.skillLv[i]-1)),0))
+    }
 
     player.atk=player.atk.mul(n(1).add(CalcGemMul(0).div(100)))
     player.hp=player.hp.mul(n(1).add(CalcGemMul(1).div(100)))
