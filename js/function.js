@@ -8,6 +8,13 @@ function CalcAttribute(){
     player.atk=player.atk.mul(n(1.001).pow(player.lv))
     player.hp=player.hp.mul(n(1.001).pow(player.lv))
 
+    for(let i=0;i<4;i++){
+        player.hp=player.hp.mul(n(1).add(player.animalLv[i]==0?0:n(0.5).mul(n(1.1).pow(player.animalLv[i]-1)),0))
+    }
+
+    player.atk=player.atk.mul(n(1).add(CalcGemMul(0).div(100)))
+    player.hp=player.hp.mul(n(1).add(CalcGemMul(1).div(100)))
+
     player.atkSpeed=5
     player.dropLuck=1
     player.expmoneyMul=1
@@ -422,6 +429,42 @@ function UpgradeAnimal(id){
 function QianDao(){
     player.qiandaoTimes+=1
     player.qiandaoTime=player.qiandaoCD
+}
+function CalcGemNeed(id){
+    return CalcNeed(Math.floor(player.gemLv[id]/100))
+}
+function CalcGemMul(id){
+    let x=n(Math.floor(player.gemLv[id]/100))
+    x=x.add(1).mul(x).div(2)
+    x=x.mul(100)
+    x=x.add((1+Math.floor(player.gemLv[id]/100))*(player.gemLv[id]-Math.floor(player.gemLv[id]/100)*100))
+    x=x.mul(n(1.5).pow(Math.floor(player.gemLv[id]/100)))
+    return x
+}
+function UpgradeGem(id,type){
+    if(type==0){
+        if(player.gem.gte(CalcGemNeed(id))){
+            logs.push("消耗 宝石碎片×"+format(CalcGemNeed(id))+" 成功合成"+(Math.floor(player.gemLv[id]/100)+1)+"阶"+["攻击","生命"][id]+"宝石")
+            player.gem=player.gem.sub(CalcGemNeed(id))
+            player.gemLv[id]+=1
+        }
+        else{
+            logs.push("宝石碎片不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.gem.gte(CalcGemNeed(id))){
+                logs.push("消耗 宝石碎片×"+format(CalcGemNeed(id))+" 成功合成"+(Math.floor(player.gemLv[id]/100)+1)+"阶"+["攻击","生命"][id]+"宝石")
+                player.gem=player.gem.sub(CalcGemNeed(id))
+                player.gemLv[id]+=1
+            }
+            else{
+                logs.push("宝石碎片不足")
+                return
+            }
+        }
+    }
 }
 function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);

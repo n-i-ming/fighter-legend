@@ -183,6 +183,11 @@ addLayer("tree-tab",{
                 str+="<br>"
                 str+="距离下次签到还剩 "+formatTime(player.qiandaoTime)+"<br><br>"
             }
+            else if(player.nowBigTab=="宝石"){
+                str+="拥有宝石碎片 "+format(player.gem,0)+"<br>"
+                str+="宝石碎片从500级怪物起开始掉落<br>"
+                str+="<br>"
+            }
             return str
         }],
         ["display-text",function(){
@@ -236,6 +241,7 @@ addLayer("tree-tab",{
                     str+="<td style='width:150px;text-align:left'>"+animalName[i]+"·"+player.animalLv[i]+"阶 "
                     str+="<text style='color:"+animalColor[i]+"'>▶</text></td>"
                     str+="<td style='width:150px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:150px;text-align:left'>生命+"+format(player.animalLv[i]==0?0:n(50).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 兽符×"+format(CalcAnimalNeed(i),0)+" <button onclick='UpgradeAnimal("+i+")'>升阶</button>"
                     str+="</tr>"
@@ -255,6 +261,17 @@ addLayer("tree-tab",{
             else if(player.nowBigTab=="签到"){
                 if(player.qiandaoTime==0)
                 str+="<button onclick='QianDao()'>签到</button>"
+            }
+            else if(player.nowBigTab=="宝石"){
+                str+="<table>"
+                str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.gemLv[0]/100+1)+"阶攻击宝石 ("+(player.gemLv[0]-Math.floor(player.gemLv[0]/100)*100)
+                +"/100)</td><td style='width:150px;text-align:left'>攻击+"+format(CalcGemMul(0),0)+"%</td>"
+                +"<td style='width:200px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(0),0)+"<button onclick='UpgradeGem(0,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(0,1)'>连续合成</button></td></tr>"
+                str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.gemLv[1]/100+1)+"阶生命宝石 ("+(player.gemLv[1]-Math.floor(player.gemLv[1]/100)*100)
+                +"/100)</td><td style='width:150px;text-align:left'>生命+"+format(CalcGemMul(1),0)+"%</td>"
+                +"<td style='width:200px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
+                str+="</table>"
+                str+="<br>每一阶宝石合成满以后提升对应属性1.5倍"
             }
             return str
         }],
