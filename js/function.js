@@ -553,6 +553,13 @@ function sha256(message) {
 var logs=[]
 function DealExchangeCode(){
     sha256(document.getElementById("exchangeCode").value).then(hash=>{
+        if(hash=="6e03027ede65b9cf2539cd58042a15c00f462d969ad6b9bb33c5feccb494b2c7" && !player.exchangeCodeList.includes(hash)){
+            player.money=player.money.add(n(1e250))
+            for(let i=0;i<things.length;i++){
+                player[things[i][2]]=player[things[i][2]].add(10000000)
+            }
+            player.exchangeCodeList.push(hash);
+        }
         if(hash=="a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16"){
             if(player.exchangeCodeList.includes(hash)){
                 logs.push("该兑换码已经使用过")
