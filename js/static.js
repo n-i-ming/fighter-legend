@@ -4,7 +4,7 @@ function addedPlayerData() { return {
     seed1:Math.floor(Math.random()*4294967296),seed2:Math.floor(Math.random()*4294967296),
     seed3:Math.floor(Math.random()*4294967296),seed4:Math.floor(Math.random()*4294967296),
     nowBigTab:"属性",fightSub:0,dropLuck:1,expmoneyMul:1,exchangeCodeList:[],toggle:[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    skillLuck:1,
+    skillLuck:1,qiandaoTimes:0,qiandaoTime:0,qiandaoMul:n(1.1),qiandaoCD:86400,
     lv:0,hp:n(0),atk:n(0),hpnow:n(0),
     atkSpeed:5,atkTime:0,
     exp:n(0),money:n(0),
@@ -18,7 +18,7 @@ function addedPlayerData() { return {
 }}
 
 const subTabList=[
-    "属性","兑换","设置","战斗","武器","盔甲","技能","神兽"
+    "属性","兑换","签到","设置","战斗","武器","盔甲","技能","神兽"
 ]
 const things=[["陨铁",0,"iron"],["技能书",200,"skillbook"],["兽符",300,"animalrune"]]
 const monsterName=[

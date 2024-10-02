@@ -12,36 +12,48 @@ function CalcAttribute(){
     player.dropLuck=1
     player.expmoneyMul=1
     player.skillLuck=1
+    player.qiandaoMul=n(1.1)
+    player.qiandaoCD=86400
     if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
         player.atkSpeed+=25
         player.dropLuck*=10
         player.expmoneyMul*=3.5
         player.skillLuck+=9
+        player.qiandaoMul=n(2)
+        player.qiandaoCD=43200
     }
     else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
         player.atkSpeed+=20
         player.dropLuck*=6
         player.expmoneyMul*=2.5
         player.skillLuck+=5
+        player.qiandaoMul=n(1.5)
+        player.qiandaoCD=43200
     }
     else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
         player.atkSpeed+=10
         player.dropLuck*=4
         player.expmoneyMul*=2
         player.skillLuck+=3
+        player.qiandaoMul=n(1.5)
     }
     else if(player.exchangeCodeList.includes("dcc8111b8017e31dbd35ad4aad96be2ca3b83d3c901e52d4a95710542c71f81b")){
         player.atkSpeed+=5
         player.dropLuck*=3
         player.expmoneyMul*=1.5
         player.skillLuck+=2
+        player.qiandaoMul=n(1.3)
     }
     else if(player.exchangeCodeList.includes("a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16")){
         player.atkSpeed+=5
         player.dropLuck*=2
         player.expmoneyMul*=1.2
         player.skillLuck+=1
+        player.qiandaoMul=n(1.2)
     }
+
+    player.atk=player.atk.mul(player.qiandaoMul.pow(player.qiandaoTimes))
+    player.hp=player.hp.mul(player.qiandaoMul.pow(player.qiandaoTimes))
 }
 // var dropList=[[100,200,"金钱",n(1e5),0.5]]
 // var damageList=[["me",-50,-50,n(1e5),0.5]]
@@ -406,6 +418,10 @@ function UpgradeAnimal(id){
     else{
         logs.push("兽符不足")
     }
+}
+function QianDao(){
+    player.qiandaoTimes+=1
+    player.qiandaoTime=player.qiandaoCD
 }
 function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);

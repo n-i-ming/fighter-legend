@@ -65,6 +65,7 @@ addLayer("tree-tab",{
         player.tmtmtm=Date.now()/1e3
         player.kuangbaoTime=Math.max(player.kuangbaoTime-dif,0)
         player.zhendangTime=Math.max(player.zhendangTime-dif,0)
+        player.qiandaoTime=Math.min(Math.max(player.qiandaoTime-dif,0),player.qiandaoCD)
         AutoUpgrade()
         CalcAttribute()
         if(dif<0.1){
@@ -129,19 +130,19 @@ addLayer("tree-tab",{
                 str+="<button onclick='DealExchangeCode()'>确认</button>"
                 str+="<br><br>"
                 if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
-                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>"
+                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>签到收益提升至×2<br>签到间隔缩短至12h<br>"
                 }
                 else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
-                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>"
+                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>签到收益提升至×1.5<br>签到间隔缩短至12h<br>"
                 }
                 else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
-                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>"
+                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>签到收益提升至×1.5<br>"
                 }
                 else if(player.exchangeCodeList.includes("dcc8111b8017e31dbd35ad4aad96be2ca3b83d3c901e52d4a95710542c71f81b")){
-                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>"
+                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>签到收益提升至×1.3<br>"
                 }
                 else if(player.exchangeCodeList.includes("a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16")){
-                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>"
+                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>签到收益提升至×1.2<br>"
                 }
             }
             else if(player.nowBigTab=="设置"){
@@ -174,6 +175,13 @@ addLayer("tree-tab",{
                 str+="兽符从300级怪物起开始掉落<br>"
                 str+="神兽技能触发概率 "+player.skillLuck+"%<br>"
                 str+="<br>"
+            }
+            else if(player.nowBigTab=="签到"){
+                str+="每次签到令攻击和生命×"+format(player.qiandaoMul)+"<br>"
+                str+="你已签到"+player.qiandaoTimes+"次<br>"
+                str+="你的攻击和生命×"+format(player.qiandaoMul.pow(player.qiandaoTimes))+"<br>"
+                str+="<br>"
+                str+="距离下次签到还剩 "+formatTime(player.qiandaoTime)+"<br><br>"
             }
             return str
         }],
@@ -243,6 +251,10 @@ addLayer("tree-tab",{
                 str+="<td style='text-align:left'>回复最大生命值的20%</text></tr>"
                 str+="<tr><td style='width:200px'>白虎特殊技能-坚甲 <text style='color:"+animalColor[3]+";text-shadow:0 0 10px "+animalColor[3]+"'>▶</text></td>"
                 str+="<td style='text-align:left'>抵消离玩家最近的一枚子弹</text></tr>"
+            }
+            else if(player.nowBigTab=="签到"){
+                if(player.qiandaoTime==0)
+                str+="<button onclick='QianDao()'>签到</button>"
             }
             return str
         }],
