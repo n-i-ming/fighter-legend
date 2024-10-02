@@ -113,7 +113,7 @@ function ThingList(){
     let ls=[]
     for(let i=0;i<things.length;i++){
         if(player.monsterLv>=things[i][1]){
-            ls.push([i,n(1+Math.floor((player.monsterLv-things[i][1])/100))])
+            ls.push([i,n(1+Math.floor((player.monsterLv-things[i][1])/100)).mul(n(2).pow(Math.floor((player.monsterLv-things[i][1])/1000)))])
         }
     }
     return ls
