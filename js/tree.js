@@ -200,25 +200,25 @@ addLayer("tree-tab",{
                 }
             }
             else if(player.nowBigTab=="武器"){
-                str+="当前武器 "+weaponName[Math.min(player.weaponLv[0],99)]+(player.weaponLv[0]>=99?"·"+player.weaponLv[0]-99+"阶":"")+"·"+player.weaponLv[1]+"级<br>"
+                str+="当前武器 "+weaponName[Math.min(player.weaponLv[0],99)]+(player.weaponLv[0]>=99?"·"+(player.weaponLv[0]-99)+"阶":"")+"·"+player.weaponLv[1]+"级<br>"
                 str+="攻击+"+format(player.weaponLv[0]>=1?n(1000).mul(n(1.5).pow(player.weaponLv[0]-1)).mul(n(1.01).pow(player.weaponLv[1])):n(0))+"<br><br>"
                 if(player.weaponLv[0]>=1){
                     str+="升级需要 金钱×"+format(CalcWeaponNeed(0))+" <button onclick='UpgradeWeapon(1)'>升级</button>"
                     str+="<button onclick='UpgradeWeapon(2)' style='margin-left:2px'>连续升级</button><br><br>"
                 }
                 str+="升阶需要 陨铁×"+format(CalcWeaponNeed(1))+" <button onclick='UpgradeWeapon(0)'>升阶</button><br>"
-                str+="下一阶 "+weaponName[Math.min(player.weaponLv[0]+1,99)]+(player.weaponLv[0]+1>=99?"·"+player.weaponLv[0]+1-99+"阶":"")+"<br>"
+                str+="下一阶 "+weaponName[Math.min(player.weaponLv[0]+1,99)]+(player.weaponLv[0]+1>=99?"·"+(player.weaponLv[0]+1-99)+"阶":"")+"<br>"
                 str+="<br>每一阶令武器增益×1.5<br>每一级令武器增益×1.01"
             }
             else if(player.nowBigTab=="盔甲"){
-                str+="当前盔甲 "+clothName[Math.min(player.clothLv[0],99)]+(player.clothLv[0]>=99?"·"+player.clothLv[0]-99+"阶":"")+"·"+player.clothLv[1]+"级<br>"
+                str+="当前盔甲 "+clothName[Math.min(player.clothLv[0],99)]+(player.clothLv[0]>=99?"·"+(player.clothLv[0]-99)+"阶":"")+"·"+player.clothLv[1]+"级<br>"
                 str+="生命+"+format(player.clothLv[0]>=1?n(10000).mul(n(1.5).pow(player.clothLv[0]-1)).mul(n(1.01).pow(player.clothLv[1])):n(0))+"<br><br>"
                 if(player.clothLv[0]>=1){
                     str+="升级需要 金钱×"+format(CalcClothNeed(0))+" <button onclick='UpgradeCloth(1)'>升级</button>"
                     str+="<button onclick='UpgradeCloth(2)' style='margin-left:2px'>连续升级</button><br><br>"
                 }
                 str+="升阶需要 陨铁×"+format(CalcClothNeed(1))+" <button onclick='UpgradeCloth(0)'>升阶</button><br>"
-                str+="下一阶 "+clothName[Math.min(player.clothLv[0]+1,99)]+(player.clothLv[0]+1>=99?"·"+player.clothLv[0]+1-99+"阶":"")+"<br>"
+                str+="下一阶 "+clothName[Math.min(player.clothLv[0]+1,99)]+(player.clothLv[0]+1>=99?"·"+(player.clothLv[0]+1-99)+"阶":"")+"<br>"
                 str+="<br>每一阶令盔甲增益×1.5<br>每一级令盔甲增益×1.01"
             }
             else if(player.nowBigTab=="技能"){
