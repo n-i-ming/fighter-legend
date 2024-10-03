@@ -24,7 +24,7 @@ function CalcAttribute(){
     player.dropLuck=1
     player.expmoneyMul=1
     player.skillLuck=1
-    player.qiandaoMul=n(1.1)
+    player.qiandaoMul=n(2)
     player.qiandaoCD=86400
     player.swordCD=10
     player.swordPower=Math.min(49.5,0.5*Math.floor(player.swordLv/10))
@@ -33,7 +33,7 @@ function CalcAttribute(){
         player.dropLuck*=10
         player.expmoneyMul*=3.5
         player.skillLuck+=9
-        player.qiandaoMul=n(2)
+        player.qiandaoMul=n(10)
         player.qiandaoCD=43200
         player.swordCD=1
         player.swordPower*=2
@@ -43,7 +43,7 @@ function CalcAttribute(){
         player.dropLuck*=6
         player.expmoneyMul*=2.5
         player.skillLuck+=5
-        player.qiandaoMul=n(1.5)
+        player.qiandaoMul=n(7)
         player.qiandaoCD=43200
         player.swordCD=2
     }
@@ -52,7 +52,7 @@ function CalcAttribute(){
         player.dropLuck*=4
         player.expmoneyMul*=2
         player.skillLuck+=3
-        player.qiandaoMul=n(1.5)
+        player.qiandaoMul=n(5)
         player.swordCD=3
     }
     else if(player.exchangeCodeList.includes("dcc8111b8017e31dbd35ad4aad96be2ca3b83d3c901e52d4a95710542c71f81b")){
@@ -60,7 +60,7 @@ function CalcAttribute(){
         player.dropLuck*=3
         player.expmoneyMul*=1.5
         player.skillLuck+=2
-        player.qiandaoMul=n(1.3)
+        player.qiandaoMul=n(4)
         player.swordCD=5
     }
     else if(player.exchangeCodeList.includes("a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16")){
@@ -68,7 +68,7 @@ function CalcAttribute(){
         player.dropLuck*=2
         player.expmoneyMul*=1.2
         player.skillLuck+=1
-        player.qiandaoMul=n(1.2)
+        player.qiandaoMul=n(3)
         player.swordCD=7
     }
 
