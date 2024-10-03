@@ -19,6 +19,10 @@ function CalcAttribute(){
     player.hp=player.hp.mul(n(1).add(CalcGemMul(1).div(100)))
 
     player.atk=player.atk.mul(n(1.1).pow(player.swordLv))
+    for(let i=0;i<5;i++){
+        player.atk=player.atk.mul(n(1).add(player.soldierLv[i]==0?0:soldierName[i][1].div(100)).pow(player.soldierLv[i]))
+        player.hp=player.hp.mul(n(1).add(player.soldierLv[i]==0?0:soldierName[i][2].div(100)).pow(player.soldierLv[i]))
+    }
 
     player.atkSpeed=5
     player.dropLuck=1
@@ -520,11 +524,11 @@ function UpgradeGem(id,type){
 function CalcSwordNeed(){
     return CalcNeed(Math.floor(player.swordLv/10)).mul(10)
 }
-function UpgradeSword(id,type){
+function UpgradeSword(type){
     if(type==0){
-        if(player.steel.gte(CalcSwordNeed(id))){
-            logs.push("消耗 精钢×"+format(CalcSwordNeed(id))+" 成功升级破灭之刃")
-            player.steel=player.steel.sub(CalcSwordNeed(id))
+        if(player.steel.gte(CalcSwordNeed())){
+            logs.push("消耗 精钢×"+format(CalcSwordNeed())+" 成功升级破灭之刃")
+            player.steel=player.steel.sub(CalcSwordNeed())
             player.swordLv+=1
         }
         else{
@@ -533,13 +537,41 @@ function UpgradeSword(id,type){
     }
     else{
         while(1){
-            if(player.steel.gte(CalcSwordNeed(id))){
-                logs.push("消耗 精钢×"+format(CalcSwordNeed(id))+" 成功升级破灭之刃")
-                player.steel=player.steel.sub(CalcSwordNeed(id))
+            if(player.steel.gte(CalcSwordNeed())){
+                logs.push("消耗 精钢×"+format(CalcSwordNeed())+" 成功升级破灭之刃")
+                player.steel=player.steel.sub(CalcSwordNeed())
                 player.swordLv+=1
             }
             else{
                 logs.push("精钢不足")
+                return
+            }
+        }
+    }
+}
+function CalcSoldierNeed(id){
+    return CalcNeed(player.soldierLv[id]/2).floor()
+}
+function UpgradeSoldier(id,type){
+    if(type==0){
+        if(player.soldierrune.gte(CalcSoldierNeed(id))){
+            logs.push("消耗 兵符×"+format(CalcSoldierNeed(id))+" 成功招募 1个"+soldierName[id][0])
+            player.soldierrune=player.soldierrune.sub(CalcSoldierNeed(id))
+            player.soldierLv[id]+=1
+        }
+        else{
+            logs.push("兵符不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.soldierrune.gte(CalcSoldierNeed(id))){
+                logs.push("消耗 兵符×"+format(CalcSoldierNeed(id))+" 成功招募 1个"+soldierName[id][0])
+                player.soldierrune=player.soldierrune.sub(CalcSoldierNeed(id))
+                player.soldierLv[id]+=1
+            }
+            else{
+                logs.push("兵符不足")
                 return
             }
         }

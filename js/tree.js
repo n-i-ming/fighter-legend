@@ -61,7 +61,7 @@ addLayer("tree-tab",{
         }
         player.devSpeed=1
         let dif=(Date.now()/1e3-player.tmtmtm)
-        // dif*=0.1
+        // dif*=0.01
         player.tmtmtm=Date.now()/1e3
         player.kuangbaoTime=Math.max(player.kuangbaoTime-dif,0)
         player.zhendangTime=Math.max(player.zhendangTime-dif,0)
@@ -195,6 +195,11 @@ addLayer("tree-tab",{
                 str+="精钢从800级怪物起开始掉落<br>"
                 str+="<br>"
             }
+            else if(player.nowBigTab=="士兵"){
+                str+="拥有兵符 "+format(player.soldierrune,0)+"<br>"
+                str+="兵符从1000级怪物起开始掉落<br>"
+                str+="<br>"
+            }
             return str
         }],
         ["display-text",function(){
@@ -234,7 +239,7 @@ addLayer("tree-tab",{
                     str+="<tr>"
                     str+="<td style='width:150px;text-align:left'>"+skillName[i]+"·"+player.skillLv[i]+"阶 "
                     str+="<text style='color:"+skillColor[i]+"'>■</td>"
-                    str+="<td style='width:150px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:150px;text-align:left'>攻击+"+format(player.skillLv[i]==0?0:n(50).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 技能书×"+format(CalcSkillNeed(i),0)+" <button onclick='UpgradeSkill("+i+")'>升阶</button>"
@@ -248,7 +253,7 @@ addLayer("tree-tab",{
                     str+="<tr>"
                     str+="<td style='width:150px;text-align:left'>"+animalName[i]+"·"+player.animalLv[i]+"阶 "
                     str+="<text style='color:"+animalColor[i]+"'>▶</text></td>"
-                    str+="<td style='width:150px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:150px;text-align:left'>生命+"+format(player.animalLv[i]==0?0:n(50).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 兽符×"+format(CalcAnimalNeed(i),0)+" <button onclick='UpgradeAnimal("+i+")'>升阶</button>"
@@ -288,6 +293,20 @@ addLayer("tree-tab",{
                 +"<td style='width:250px;text-align:right'>消耗精钢×"+format(CalcSwordNeed(),0)+"</td><td><button onclick='UpgradeSword(1)'>连续升级</button></td></tr>"
                 str+="</table>"
                 str+="<br>每"+player.swordCD+"秒发射一道伤害值为怪物当前生命"+format(player.swordPower,1)+"%的剑气(不超过"+format(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100))+")"
+            }
+            else if(player.nowBigTab=="士兵"){
+                str+="<table>"
+                for(let i=0;i<soldierName.length;i++){
+                    str+="<tr>"
+                    str+="<td style='width:150px;text-align:left'>"+soldierName[i][0]+"·"+player.soldierLv[i]+"个</td>"
+                    str+="<td style='width:150px;text-align:left'>攻击+"+format(player.soldierLv[i]==0?0:soldierName[i][1].div(100).add(1).pow(player.soldierLv[i]).sub(1).mul(100),0)+"%</td>"
+                    str+="<td style='width:150px;text-align:left'>生命+"+format(player.soldierLv[i]==0?0:soldierName[i][2].div(100).add(1).pow(player.soldierLv[i]).sub(1).mul(100),0)+"%</td>"
+                    str+="<td style='width:100px'></td>"
+                    str+="<td style='width:250px;text-align:right'>消耗 兵符×"+format(CalcSoldierNeed(i),0)+" <button onclick='UpgradeSoldier("+i+",0)'>招募</button>"
+                    +"</td><td><button style='margin-left:-10px' onclick='UpgradeSoldier("+i+",1)'>一键招募</button></td>"
+                    str+="</tr>"
+                }
+                str+="</table>"
             }
             return str
         }],
