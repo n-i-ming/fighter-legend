@@ -145,6 +145,12 @@ function DealGet(dif){
     }
 }
 function DealFight(dif){
+    player.atkTime=Math.max(0,player.atkTime)
+    player.monsterAtkTime=Math.max(0,player.monsterAtkTime)
+    for(let i=0;i<4;i++){
+        player.animalAtkTime[i]=Math.max(0,player.animalAtkTime[i])
+    }
+    player.swordAtkTime=Math.max(0,player.swordAtkTime)
     player.atkTime+=dif
     if(player.zhendangTime==0){
         player.monsterAtkTime+=dif
