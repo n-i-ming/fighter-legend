@@ -406,43 +406,20 @@ function CalcNeed(xx){
     if(x>=60)x=Math.pow(x/60,0.5)*60
     return n(10).mul(n(1.2).pow(x)).floor()
 }
+const ExpNeed=[
+    [200,n(10000)],[500,n(20000)],[1000,n(50000)],[1500,n(75000)],[2000,n(100000)],[3000,n(200000)],[4000,n(300000)],[6000,n(500000)],
+    [7500,n(1e6)],[10000,n(2e6)],[15000,n(3e6)],[20000,n(4e6)],[25000,n(5e6)],[30000,n(7.5e6)],[40000,n(1e7)],[50000,n(1.2e7)],[60000,n(1.4e7)],
+    [70000,n(1.6e7)],[80000,n(1.8e7)],[90000,n(2e7)],[100000,n(2.5e7)],[110000,n(3e7)],[120000,n(3.5e7)],[130000,n(4e7)],[140000,n(4.5e7)],
+    [150000,n(5e7)],[160000,n(5.5e7)],[170000,n(6e7)],[180000,n(6.5e7)],[190000,n(7e7)],[200000,n(7.5e7)],[210000,n(8e7)],[220000,n(8.5e7)],
+    [230000,n(9e7)],[240000,n(9.5e7)],[250000,n(1e8)],[260000,n(1.1e8)],[270000,n(1.2e8)],[280000,n(1.3e8)],[290000,n(1.4e8)],[300000,n(1.5e8)],
+    [3.1e5,n(1.6e8)],[3.2e5,n(1.7e8)],[3.3e5,n(1.8e8)],[3.4e5,n(1.9e8)],[3.5e5,n(2.0e8)],
+]
 function CalcExpNeed(x){
-    if(x<200)return n(10000)
-    if(x<500)return n(20000)
-    if(x<1000)return n(50000)
-    if(x<1500)return n(75000)
-    if(x<2000)return n(100000)
-    if(x<3000)return n(200000)
-    if(x<4000)return n(300000)
-    if(x<6000)return n(500000)
-    if(x<7500)return n(1e6)
-    if(x<10000)return n(2e6)
-    if(x<15000)return n(3e6)
-    if(x<20000)return n(4e6)
-    if(x<25000)return n(5e6)
-    if(x<30000)return n(7.5e6)
-    if(x<40000)return n(1e7)
-    if(x<50000)return n(1.2e7)
-    if(x<60000)return n(1.4e7)
-    if(x<70000)return n(1.6e7)
-    if(x<80000)return n(1.8e7)
-    if(x<90000)return n(2e7)
-    if(x<1e5)return n(2.5e7)
-    if(x<1.1e5)return n(3e7)
-    if(x<1.2e5)return n(3.5e7)
-    if(x<1.3e5)return n(4e7)
-    if(x<1.4e5)return n(4.5e7)
-    if(x<1.5e5)return n(5e7)
-    if(x<1.6e5)return n(5.5e7)
-    if(x<1.7e5)return n(6e7)
-    if(x<1.8e5)return n(6.5e7)
-    if(x<1.9e5)return n(7e7)
-    if(x<2.0e5)return n(7.5e7)
-    if(x<2.1e5)return n(8e7)
-    if(x<2.2e5)return n(8.5e7)
-    if(x<2.3e5)return n(9e7)
-    if(x<2.4e5)return n(9.5e7)
-    if(x<2.5e5)return n(1e8)
+    for(let i=0;i<ExpNeed.length;i++){
+        if(x<ExpNeed[i][0]){
+            return ExpNeed[i][1]
+        }
+    }
     return n(1e308)
 }
 function AutoUpgrade(){
