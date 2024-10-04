@@ -129,7 +129,13 @@ addLayer("tree-tab",{
                 str+="<input id='exchangeCode' style='width:400px'>"
                 str+="<button onclick='DealExchangeCode()'>确认</button>"
                 str+="<br><br>"
-                if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
+                if(player.exchangeCodeList.includes("794a01ec79ccc88dd1492824822c5b3d9ab049cae238eebd71db87295878ce91")){
+                    str+="飞天爽会员<br>经验金钱收益+550%<br>攻速+45<br>材料掉落概率加19倍<br>技能触发概率+19%<br>签到收益提升至×50<br>签到间隔缩短至12h<br>破灭冷却缩短至0.5s<br>破灭效果翻倍<br>"
+                }
+                else if(player.exchangeCodeList.includes("1516e9db625c9b9d95db1f211c58347b198901a3c4ac6949e66039db138954ac")){
+                    str+="超极爽会员<br>经验金钱收益+400%<br>攻速+35<br>材料掉落概率加14倍<br>技能触发概率+14%<br>签到收益提升至×20<br>签到间隔缩短至12h<br>破灭冷却缩短至0.75s<br>破灭效果翻倍<br>"
+                }
+                else if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
                     str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>签到收益提升至×10<br>签到间隔缩短至12h<br>破灭冷却缩短至1s<br>破灭效果翻倍<br>"
                 }
                 else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){

@@ -32,7 +32,27 @@ function CalcAttribute(){
     player.qiandaoCD=86400
     player.swordCD=10
     player.swordPower=Math.min(49.5,0.5*Math.floor(player.swordLv/10))
-    if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
+    if(player.exchangeCodeList.includes("794a01ec79ccc88dd1492824822c5b3d9ab049cae238eebd71db87295878ce91")){
+        player.atkSpeed+=45
+        player.dropLuck*=20
+        player.expmoneyMul*=7.5
+        player.skillLuck+=19
+        player.qiandaoMul=n(50)
+        player.qiandaoCD=43200
+        player.swordCD=0.5
+        player.swordPower*=2
+    }
+    else if(player.exchangeCodeList.includes("1516e9db625c9b9d95db1f211c58347b198901a3c4ac6949e66039db138954ac")){
+        player.atkSpeed+=35
+        player.dropLuck*=15
+        player.expmoneyMul*=5
+        player.skillLuck+=14
+        player.qiandaoMul=n(20)
+        player.qiandaoCD=43200
+        player.swordCD=0.75
+        player.swordPower*=2
+    }
+    else if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
         player.atkSpeed+=25
         player.dropLuck*=10
         player.expmoneyMul*=3.5
@@ -654,6 +674,24 @@ function DealExchangeCode(){
             else{
                 player.exchangeCodeList.push(hash);
                 logs.push("极爽会员已激活")
+            }
+        }
+        else if(hash=="1516e9db625c9b9d95db1f211c58347b198901a3c4ac6949e66039db138954ac"){
+            if(player.exchangeCodeList.includes(hash)){
+                logs.push("该兑换码已经使用过")
+            }
+            else{
+                player.exchangeCodeList.push(hash);
+                logs.push("超极爽会员已激活")
+            }
+        }
+        else if(hash=="794a01ec79ccc88dd1492824822c5b3d9ab049cae238eebd71db87295878ce91"){
+            if(player.exchangeCodeList.includes(hash)){
+                logs.push("该兑换码已经使用过")
+            }
+            else{
+                player.exchangeCodeList.push(hash);
+                logs.push("飞天爽会员已激活")
             }
         }
         else{
