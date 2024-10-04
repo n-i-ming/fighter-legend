@@ -168,6 +168,8 @@ addLayer("tree-tab",{
                 str+="神兽攻击动画显示<button onclick='player.toggle[8]=!player.toggle[8]'>"+(player.toggle[8]==0?"开":"关")+"</button><br><br>"
                 str+="破灭攻击伤害显示<button onclick='player.toggle[9]=!player.toggle[9]'>"+(player.toggle[9]==0?"开":"关")+"</button><br><br>"
                 str+="破灭攻击动画显示<button onclick='player.toggle[10]=!player.toggle[10]'>"+(player.toggle[10]==0?"开":"关")+"</button><br><br>"
+                str+="机炮攻击伤害显示<button onclick='player.toggle[11]=!player.toggle[11]'>"+(player.toggle[11]==0?"开":"关")+"</button><br><br>"
+                str+="机炮攻击动画显示<button onclick='player.toggle[12]=!player.toggle[12]'>"+(player.toggle[12]==0?"开":"关")+"</button><br><br>"
             }
             else if(player.nowBigTab=="武器"){
                 str+="拥有陨铁 "+format(player.iron,0)+"<br>"+"拥有金钱 "+format(player.money,0)
@@ -218,6 +220,11 @@ addLayer("tree-tab",{
                 str+="每点精魄使攻击、生命独立提升1%<br>"
                 str+="你总计拥有"+format(player.spiritPoint,0)+"点精魄<br>"
                 str+="攻击、生命累计×"+format(n(1.01).pow(player.spiritPoint),0)+"<br>"
+                str+="<br>"
+            }
+            else if(player.nowBigTab=="机炮"){
+                str+="拥有装甲部件 "+format(player.part,0)+"<br>"
+                str+="装甲部件从2000级怪物起开始掉落<br>"
                 str+="<br>"
             }
             return str
@@ -301,10 +308,10 @@ addLayer("tree-tab",{
                 str+="<table>"
                 str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.gemLv[0]/100+1)+"阶攻击宝石 ("+(player.gemLv[0]-Math.floor(player.gemLv[0]/100)*100)
                 +"/100)</td><td style='width:150px;text-align:left'>攻击+"+format(CalcGemMul(0),0)+"%</td>"
-                +"<td style='width:250px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(0),0)+"<button onclick='UpgradeGem(0,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(0,1)'>连续合成</button></td></tr>"
+                +"<td style='width:300px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(0),0)+"<button onclick='UpgradeGem(0,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(0,1)'>连续合成</button></td></tr>"
                 str+="<tr><td style='width:200px;text-align:left'>"+Math.floor(player.gemLv[1]/100+1)+"阶生命宝石 ("+(player.gemLv[1]-Math.floor(player.gemLv[1]/100)*100)
                 +"/100)</td><td style='width:150px;text-align:left'>生命+"+format(CalcGemMul(1),0)+"%</td>"
-                +"<td style='width:250px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
+                +"<td style='width:300px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
                 str+="</table>"
                 str+="<br>每一阶宝石合成满以后提升对应属性1.5倍"
             }
@@ -342,6 +349,31 @@ addLayer("tree-tab",{
                     str+="</tr>"
                 }
                 str+="</table>"
+            }
+            else if(player.nowBigTab=="机炮"){
+                str+="<table>"
+                for(let i=0;i<4;i++){
+                    str+="<tr>"
+                    if(player.partLv[i]==-1){
+                        str+="<td style='width:150px;text-align:left'>激活机炮槽"+(i+1)+"</td>"
+                        str+="<td style='width:150px;text-align:left'>　</td>"
+                        str+="<td style='width:100px'>　</td>"
+                        str+="<td style='width:200px;text-align:right'>消耗 装甲部件"+format(n(1000).pow(i+1))+"</td><td><button onclick='UpgradePart("+i+",0)'>激活</button></td>"
+                    }
+                    else{
+                        str+="<td style='width:150px;text-align:left'>机炮"+(i+1)+"·"+player.partLv[i]+"级</td>"
+                        str+="<td style='width:150px;text-align:left'>攻击+"+format(n(1.1).pow(player.partLv[i]).sub(1).mul(100),0)+"%</td>"
+                        str+="<td style='width:100px'></td>"
+                        str+="<td style='width:300px;text-align:right'>消耗 装甲部件×"+format(CalcPartNeed(i),0)+" <button onclick='UpgradePart("+i+",0)'>升级</button>"
+                        +"</td><td><button style='margin-left:-10px' onclick='UpgradePart("+i+",1)'>一键升级</button></td>"
+                    }
+                    str+="</tr>"
+                }
+                str+="</table>"
+                str+="<br>机炮攻击速度为本体的十分之一<br><br>"
+                str+="机炮每次攻击会令护盾值变为原先护盾值和生命值之和的两倍<br>"
+                str+="护盾值可以减免等量伤害<br>"
+                str+="护盾值在受到一次伤害后清零<br>"
             }
             return str
         }],

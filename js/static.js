@@ -5,26 +5,27 @@ function addedPlayerData() { return {
     seed3:Math.floor(Math.random()*4294967296),seed4:Math.floor(Math.random()*4294967296),
     nowBigTab:"属性",fightSub:0,dropLuck:1,expmoneyMul:1,exchangeCodeList:[],toggle:[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     skillLuck:1,qiandaoTimes:0,qiandaoTime:0,qiandaoMul:n(1.1),qiandaoCD:86400,
-    lv:0,hp:n(0),atk:n(0),hpnow:n(0),
+    lv:0,hp:n(0),atk:n(0),hpnow:n(0),shield:n(0),
     atkSpeed:5,atkTime:0,
     exp:n(0),money:n(0),
 
     monsterLv:0,monsterHp:n(1000),monsterAtk:n(1),
     monsterAtkSpeed:2,monsterAtkTime:0,
     kuangbaoTime:0,zhendangTime:0,
-    iron:n(0),skillbook:n(0),animalrune:n(0),gem:n(0),steel:n(0),soldierrune:n(0),spirit:n(0),
+    iron:n(0),skillbook:n(0),animalrune:n(0),gem:n(0),steel:n(0),soldierrune:n(0),spirit:n(0),part:n(0),
 
     weaponLv:[0,0],clothLv:[0,0],skillLv:[0,0,0,0,0],animalLv:[0,0,0,0],animalAtkTime:[0,0,0,0],
     gemLv:[0,0],swordLv:0,swordAtkTime:0,swordCD:10,swordPower:0,soldierLv:[0,0,0,0,0],spiritLv:[0,0,0,0,0],spiritPoint:n(0),
+    partLv:[-1,-1,-1,-1],partAtkTime:[0,0,0,0],
 }}
 
 const subTabList=[
     "属性","兑换","签到","设置","战斗",
     "武器","盔甲","技能","神兽","宝石","换行",
-    "破灭","士兵","图鉴"
+    "破灭","士兵","图鉴","机炮"
 ]
 const things=[["陨铁",0,"iron"],["技能书",200,"skillbook"],["兽符",300,"animalrune"],["宝石碎片",500,"gem"],["精钢",800,"steel"],["兵符",1000,"soldierrune"],
-["魂魄",1500,"spirit"],]
+["魂魄",1500,"spirit"],["装甲部件",2000,"part"]]
 const monsterName=[
     "野猪","小狼","兔子","野兔","狐狸","山鸡","鹿","猫头鹰","野狼","巨鼠","蝙蝠","狼蛛","血狼","风暴鹰","瘟疫鼠","毒蛇","石怪","狼人","狼骑士","巨型蟾蜍","暴躁牛","烈焰蝙蝠",
     "狼群领主","冰霜熊","黑色巨龙","迷雾幻影","幽灵骷髅","狂战士","黑暗法师","血色骑士","地狱犬","鬼火","深渊裂缝","战斗犀牛","巨型蜘蛛","亡灵法师","瘟疫精灵","风暴巨人","剑齿虎",

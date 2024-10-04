@@ -31,6 +31,10 @@ function CalcAttribute(){
     player.atk=player.atk.mul(n(1.01).pow(player.spiritPoint))
     player.hp=player.hp.mul(n(1.01).pow(player.spiritPoint))
 
+    for(let i=0;i<4;i++){
+        player.atk=player.atk.mul(n(1.1).pow(Math.max(0,player.partLv[i])))
+    }
+
     player.atkSpeed=5
     player.dropLuck=1
     player.expmoneyMul=1
@@ -155,6 +159,10 @@ function DealDamage(str,dmg,extra){
         }
     }
     else{
+        if(player.shield.gt(0)){
+            dmg=dmg.sub(player.shield).max(0)
+            player.shield=n(0)
+        }
         player.hpnow=player.hpnow.sub(dmg)
         if(player.hpnow.lt(0)){
             ResetFight()
@@ -196,12 +204,20 @@ function DealFight(dif){
         player.animalAtkTime[i]=Math.max(0,player.animalAtkTime[i])
     }
     player.swordAtkTime=Math.max(0,player.swordAtkTime)
+    for(let i=0;i<4;i++){
+        player.partAtkTime[i]=Math.max(0,player.partAtkTime[i])
+    }
     player.atkTime+=dif
     if(player.zhendangTime==0){
         player.monsterAtkTime+=dif
     }
     for(let i=0;i<4;i++){
         player.animalAtkTime[i]+=dif*(random()+0.5)
+    }
+    for(let i=0;i<4;i++){
+        if(player.partLv[i]>=0){
+            player.partAtkTime[i]+=dif*(random()+0.5)
+        }
     }
     player.swordAtkTime+=dif
     let ct=0
@@ -215,6 +231,10 @@ function DealFight(dif){
             else if(damageDrawList[i][0]=="me" && player.kuangbaoTime>0){
                 damage=damage.mul(5)
             }
+            if(damageDrawList[i][2]=="part"){
+                player.shield=player.hpnow.add(player.shield).mul(2)
+            }
+
             DealDamage(damageDrawList[i][0],damage,[damageDrawList[i][2],damageDrawList[i][3]])
             if(damageDrawList[i][7]<=player.skillLuck/100){
                 if(damageDrawList[i][3]==0)player.kuangbaoTime=3
@@ -272,6 +292,12 @@ function DealFight(dif){
             damageDrawList.push(["me",0,"animal",i,n(0.25).mul(n(1.1).pow(player.animalLv[i])),random()*(-20)+10,random()*(-25)+10,random()])
         }
     }
+    for(let i=0;i<4;i++){
+        while(player.partAtkTime[i]>=10/player.atkSpeed){
+            player.partAtkTime[i]-=10/player.atkSpeed
+            damageDrawList.push(["me",0,"part",i,0,0,1])
+        }
+    }
     if(player.swordAtkTime>=player.swordCD){
         player.swordAtkTime-=player.swordCD
         if(player.swordLv>=10){
@@ -296,7 +322,8 @@ function DrawFight(){
     str+="<td style='width:150px;text-align:right'>"+monsterName[Math.floor(player.monsterLv/1000)]+"</td>"
     str+="</tr>"
     str+="<tr>"
-    str+="<td style='width:150px;text-align:left'>血量 "+format(player.hpnow,0)+"</td>"
+    if(player.shield.gt(0)) str+="<td style='width:150px;text-align:left'><text style='color:blue'>护盾 "+format(player.shield,0)+"</text></td>"
+    else str+="<td style='width:150px;text-align:left'>血量 "+format(player.hpnow,0)+"</td>"
     str+="<td style='width:300px;text-align:left'>　</td>"
     str+="<td style='width:150px;text-align:right'>"+format(player.monsterHp,0)+" 血量</td>"
     str+="</tr>"
@@ -321,7 +348,7 @@ function DrawFight(){
     for(let i=0;i<damageList.length;i++){
         let x=document.getElementById("mycanvas").getBoundingClientRect().x+damageList[i][1]+(damageList[i][0]=="me"?600:0)
         let y=document.getElementById("mycanvas").getBoundingClientRect().y+damageList[i][2]+500
-        if((damageList[i][5][0]=="sword"?player.toggle[9]==0:damageList[i][5][0]=="animal"?player.toggle[7]==0:damageList[i][5][0]=="skill"?player.toggle[5]==0:player.toggle[3]==0))
+        if((damageList[i][5][0]=="part"?player.toggle[11]==0:damageList[i][5][0]=="sword"?player.toggle[9]==0:damageList[i][5][0]=="animal"?player.toggle[7]==0:damageList[i][5][0]=="skill"?player.toggle[5]==0:player.toggle[3]==0))
         str+=`<div style='
         color:${damageList[i][5][0]=="sword"?"gold":damageList[i][5][0]=="animal"?animalColor[damageList[i][5][1]]:damageList[i][5][0]=="skill"?skillColor[damageList[i][5][1]]:"red"};
         opacity:${Calc(damageList[i][4],2)};
@@ -330,23 +357,37 @@ function DrawFight(){
         ${damageList[i][5][0]=="sword"?"(破灭)":""}</div>`
     }
     for(let i=0;i<damageDrawList.length;i++){
-        let x=document.getElementById("mycanvas").getBoundingClientRect().x+(damageDrawList[i][0]=="me"?50:550)+(damageDrawList[i][0]=="me"?500:-500)*damageDrawList[i][1]
+        let x=document.getElementById("mycanvas").getBoundingClientRect().x+(damageDrawList[i][0]=="me"?50:550)
+        +(damageDrawList[i][2]=="part"?0:damageDrawList[i][0]=="me"?500:-500)*damageDrawList[i][1]
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==2?250+254.95*Math.cos(Math.PI*(168.69-157.38*damageDrawList[i][1])/180):0)
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==3?250+254.95*Math.cos(Math.PI*(168.69-157.38*damageDrawList[i][1])/180):0)
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==0?250+291.55*Math.cos(Math.PI*(149.03-118.06*damageDrawList[i][1])/180):0)
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==1?250+291.55*Math.cos(Math.PI*(149.03-118.06*damageDrawList[i][1])/180):0)
         let y=document.getElementById("mycanvas").getBoundingClientRect().y+500+10+(damageDrawList[i][0]=="me"?0:-15)+(damageDrawList[i][2]=="sword"?-12.5:0)
-        if((damageDrawList[i][2]=="sword"?player.toggle[10]==0:damageDrawList[i][2]=="animal"?player.toggle[8]==0:damageDrawList[i][2]=="skill"?player.toggle[6]==0:player.toggle[4]==0))
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==2?50-254.95*Math.sin(Math.PI*(168.69-157.38*damageDrawList[i][1])/180):0)
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==3?-50+254.95*Math.sin(Math.PI*(168.69-157.38*damageDrawList[i][1])/180):0)
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==0?150-291.55*Math.sin(Math.PI*(149.03-118.06*damageDrawList[i][1])/180):0)
+        +(damageDrawList[i][2]=="part"&&damageDrawList[i][3]==1?-150+291.55*Math.sin(Math.PI*(149.03-118.06*damageDrawList[i][1])/180):0)
+        if((damageDrawList[i][2]=="part"?player.toggle[12]==0:damageDrawList[i][2]=="sword"?player.toggle[10]==0:damageDrawList[i][2]=="animal"?player.toggle[8]==0:damageDrawList[i][2]=="skill"?player.toggle[6]==0:player.toggle[4]==0))
         str+=`<div style='
         ${(damageDrawList[i][2]=="animal"&&damageDrawList[i][7]<=player.skillLuck/100)?"z-index:2;":""}
-        ${damageDrawList[i][2]=="animal"?"color:"+animalColor[damageDrawList[i][3]]+";":""}
+        ${damageDrawList[i][2]=="part"?"transform:rotate("+
+            (damageDrawList[i][3]==2?-(168.69-157.38*damageDrawList[i][1])+45:
+             damageDrawList[i][3]==3?(168.69-157.38*damageDrawList[i][1])-135:
+             damageDrawList[i][3]==0?-(149.03-118.06*damageDrawList[i][1])+45:(149.03-118.06*damageDrawList[i][1])-135)+"deg);":""}
+        ${damageDrawList[i][2]=="part"?"color:orange;":damageDrawList[i][2]=="animal"?"color:"+animalColor[damageDrawList[i][3]]+";":""}
         ${damageDrawList[i][0]=="me"?
             damageDrawList[i][2]=="skill"?"background-color:"+skillColor[damageDrawList[i][3]]:
             damageDrawList[i][2]=="animal"?"":
-            damageDrawList[i][2]=="sword"?"":"background-color:blue"
+            damageDrawList[i][2]=="sword"?"":
+            damageDrawList[i][2]=="part"?"":"background-color:blue"
             :"background-color:red"};position:absolute;left:${x+(damageDrawList[i][2]=="animal"?damageDrawList[i][5]:0)}px;top:${y+(damageDrawList[i][2]=="animal"?damageDrawList[i][6]:0)}px;
         height:${damageDrawList[i][2]=="sword"?"30px":"10px"};width:${damageDrawList[i][2]=="sword"?"30px":"10px"};
         ${damageDrawList[i][2]=="sword"?"border:3px solid red;clip-path:polygon(75% 0%,75% 100%,100% 100%,100% 0%);":""}
         ${damageDrawList[i][2]=="animal"?"font-size:5px":""}
         border-radius:${damageDrawList[i][2]=="skill"||damageDrawList[i][2]=="animal"?0:100}px'>
         ${(damageDrawList[i][2]=="animal"&&damageDrawList[i][7]<=player.skillLuck/100)?"<text style='text-shadow:0px 0px 10px "+animalColor[damageDrawList[i][3]]+"'>":""}
-        ${damageDrawList[i][2]=="animal"?"▶":""}
+        ${damageDrawList[i][2]=="part"?"➷":damageDrawList[i][2]=="animal"?"▶":""}
         ${(damageDrawList[i][2]=="animal"&&damageDrawList[i][7]<=player.skillLuck/100)?"</text>":""}</div>`
     }
     return str
@@ -671,6 +712,45 @@ function UpgradeSpirit(id,type){
             }
             else{
                 logs.push("魂魄不足")
+                return
+            }
+        }
+    }
+}
+function CalcPartNeed(id){
+    return CalcNeed(player.partLv[id]/1.2).floor()
+}
+function UpgradePart(id,type){
+    if(player.partLv[id]==-1){
+        if(player.part.gte(n(1000).pow(id+1))){
+            logs.push("消耗 装甲部件×"+format(n(1000).pow(id+1))+" 成功激活机炮槽"+(id+1))
+            player.part=player.part.sub(n(1000).pow(id+1))
+            player.partLv[id]=0
+        }
+        else{
+            logs.push("装甲部件不足")
+        }
+        return
+    }
+    if(type==0){
+        if(player.part.gte(CalcPartNeed(id))){
+            logs.push("消耗 装甲部件×"+format(CalcPartNeed(id))+" 成功升级机炮"+(id+1))
+            player.part=player.part.sub(CalcPartNeed(id))
+            player.partLv[id]+=1
+        }
+        else{
+            logs.push("装甲部件不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.part.gte(CalcPartNeed(id))){
+                logs.push("消耗 装甲部件×"+format(CalcPartNeed(id))+" 成功升级机炮"+(id+1))
+                player.part=player.part.sub(CalcPartNeed(id))
+                player.partLv[id]+=1
+            }
+            else{
+                logs.push("装甲部件不足")
                 return
             }
         }
