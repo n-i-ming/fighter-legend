@@ -147,6 +147,16 @@ function DealGet(dif){
     let tms=Math.floor(dif*player.atkSpeed)
     player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(tms))
     player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms))
+    let swordTimes=Math.floor(dif/player.swordCD)
+    ResetFight()
+    for(let i=0;i<swordTimes;i++){
+        player.money=player.money.add(player.monsterHp.mul(player.swordPower).div(100).min(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100)))
+        player.monsterHp=player.monsterHp.sub(player.monsterHp.mul(player.swordPower).div(100).min(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100)))
+        if(player.monsterHp.lt(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0]))))){
+            player.monsterLv+=1
+            ResetFight()
+        }
+    }
     let ls=ThingList()
     for(let i=0;i<ls.length;i++){
         player[things[ls[i][0]][2]]=player[things[ls[i][0]][2]].add(n(ls[i][1]).mul(Math.floor(tms*5*player.dropLuck/1000)))
