@@ -61,7 +61,7 @@ addLayer("tree-tab",{
         }
         player.devSpeed=1
         let dif=(Date.now()/1e3-player.tmtmtm)
-        // dif*=0.01
+        // dif*=100
         player.tmtmtm=Date.now()/1e3
         player.kuangbaoTime=Math.max(player.kuangbaoTime-dif,0)
         player.zhendangTime=Math.max(player.zhendangTime-dif,0)
@@ -82,7 +82,12 @@ addLayer("tree-tab",{
             let str=""
             str+="<table><tr>"
             for(let i=0;i<subTabList.length;i++){
-                str+="<td><button "+(i>0?"style='margin-left:-10px'":"")+" onclick='player.nowBigTab="+'"'+subTabList[i]+'"'+";player.fightSub=0'>"+subTabList[i]+"</button></td>"
+                if(subTabList[i]=="换行"){
+                    str+="</tr><tr>"
+                }
+                else{
+                    str+="<td><button "+(i>0&&(subTabList[i-1]!="换行")?"style='margin-left:-10px'":"")+" onclick='player.nowBigTab="+'"'+subTabList[i]+'"'+";player.fightSub=0'>"+subTabList[i]+"</button></td>"
+                }
             }
             str+="</tr></table>"
             return str
@@ -206,6 +211,15 @@ addLayer("tree-tab",{
                 str+="兵符从1000级怪物起开始掉落<br>"
                 str+="<br>"
             }
+            else if(player.nowBigTab=="图鉴"){
+                str+="拥有魂魄 "+format(player.spirit,0)+"<br>"
+                str+="魂魄从1500级怪物起开始掉落<br>"
+                str+="<br>"
+                str+="每点精魄使攻击、生命独立提升1%<br>"
+                str+="你总计拥有"+format(player.spiritPoint,0)+"点精魄<br>"
+                str+="攻击、生命累计×"+format(n(1.01).pow(player.spiritPoint),0)+"<br>"
+                str+="<br>"
+            }
             return str
         }],
         ["display-text",function(){
@@ -248,7 +262,8 @@ addLayer("tree-tab",{
                     str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:150px;text-align:left'>攻击+"+format(player.skillLv[i]==0?0:n(50).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
-                    str+="<td style='width:300px;text-align:right'>消耗 技能书×"+format(CalcSkillNeed(i),0)+" <button onclick='UpgradeSkill("+i+")'>升阶</button>"
+                    str+="<td style='width:300px;text-align:right'>消耗 技能书×"+format(CalcSkillNeed(i),0)+" <button onclick='UpgradeSkill("+i+",0)'>升阶</button>"
+                    +"</td><td><button style='margin-left:-10px' onclick='UpgradeSkill("+i+",1)'>一键升阶</button></td>"
                     str+="</tr>"
                 }
                 str+="</table>"
@@ -262,7 +277,8 @@ addLayer("tree-tab",{
                     str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:150px;text-align:left'>生命+"+format(player.animalLv[i]==0?0:n(50).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
-                    str+="<td style='width:250px;text-align:right'>消耗 兽符×"+format(CalcAnimalNeed(i),0)+" <button onclick='UpgradeAnimal("+i+")'>升阶</button>"
+                    str+="<td style='width:250px;text-align:right'>消耗 兽符×"+format(CalcAnimalNeed(i),0)+" <button onclick='UpgradeAnimal("+i+",0)'>升阶</button>"
+                    +"</td><td><button style='margin-left:-10px' onclick='UpgradeAnimal("+i+",1)'>一键升阶</button></td>"
                     str+="</tr>"
                 }
                 str+="</table>"
@@ -310,6 +326,19 @@ addLayer("tree-tab",{
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 兵符×"+format(CalcSoldierNeed(i),0)+" <button onclick='UpgradeSoldier("+i+",0)'>招募</button>"
                     +"</td><td><button style='margin-left:-10px' onclick='UpgradeSoldier("+i+",1)'>一键招募</button></td>"
+                    str+="</tr>"
+                }
+                str+="</table>"
+            }
+            else if(player.nowBigTab=="图鉴"){
+                str+="<table>"
+                for(let i=0;i<spiritName.length;i++){
+                    str+="<tr>"
+                    str+="<td style='width:150px;text-align:left'>"+spiritName[i]+"·"+player.spiritLv[i]+"级</td>"
+                    str+="<td style='width:150px;text-align:left'>精魄+"+format(player.spiritLv[i]*(i+1),0)+"点</td>"
+                    str+="<td style='width:100px'></td>"
+                    str+="<td style='width:250px;text-align:right'>消耗 魂魄×"+format(CalcSpiritNeed(i),0)+" <button onclick='UpgradeSpirit("+i+",0)'>升级</button>"
+                    +"</td><td><button style='margin-left:-10px' onclick='UpgradeSpirit("+i+",1)'>一键升级</button></td>"
                     str+="</tr>"
                 }
                 str+="</table>"

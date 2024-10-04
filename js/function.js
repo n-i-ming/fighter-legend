@@ -24,6 +24,13 @@ function CalcAttribute(){
         player.hp=player.hp.mul(n(1).add(player.soldierLv[i]==0?0:soldierName[i][2].div(100)).pow(player.soldierLv[i]))
     }
 
+    player.spiritPoint=n(0)
+    for(let i=0;i<5;i++){
+        player.spiritPoint=player.spiritPoint.add(player.spiritLv[i]*(i+1))
+    }
+    player.atk=player.atk.mul(n(1.01).pow(player.spiritPoint))
+    player.hp=player.hp.mul(n(1.01).pow(player.spiritPoint))
+
     player.atkSpeed=5
     player.dropLuck=1
     player.expmoneyMul=1
@@ -492,27 +499,57 @@ function UpgradeCloth(type){
 function CalcSkillNeed(id){
     return CalcNeed(player.skillLv[id])
 }
-function UpgradeSkill(id){
-    if(player.skillbook.gte(CalcSkillNeed(id))){
-        logs.push("消耗 技能书×"+format(CalcSkillNeed(id))+" 成功升阶技能")
-        player.skillbook=player.skillbook.sub(CalcSkillNeed(id))
-        player.skillLv[id]+=1
+function UpgradeSkill(id,type){
+    if(type==0){
+        if(player.skillbook.gte(CalcSkillNeed(id))){
+            logs.push("消耗 技能书×"+format(CalcSkillNeed(id))+" 成功升阶技能")
+            player.skillbook=player.skillbook.sub(CalcSkillNeed(id))
+            player.skillLv[id]+=1
+        }
+        else{
+            logs.push("技能书不足")
+        }
     }
     else{
-        logs.push("技能书不足")
+        while(1){
+            if(player.skillbook.gte(CalcSkillNeed(id))){
+                logs.push("消耗 技能书×"+format(CalcSkillNeed(id))+" 成功升阶技能")
+                player.skillbook=player.skillbook.sub(CalcSkillNeed(id))
+                player.skillLv[id]+=1
+            }
+            else{
+                logs.push("技能书不足")
+                return
+            }
+        }
     }
 }
 function CalcAnimalNeed(id){
     return CalcNeed(player.animalLv[id])
 }
-function UpgradeAnimal(id){
-    if(player.animalrune.gte(CalcAnimalNeed(id))){
-        logs.push("消耗 兽符×"+format(CalcAnimalNeed(id))+" 成功升阶神兽")
-        player.animalrune=player.animalrune.sub(CalcAnimalNeed(id))
-        player.animalLv[id]+=1
+function UpgradeAnimal(id,type){
+    if(type==0){
+        if(player.animalrune.gte(CalcAnimalNeed(id))){
+            logs.push("消耗 兽符×"+format(CalcAnimalNeed(id))+" 成功升阶神兽")
+            player.animalrune=player.animalrune.sub(CalcAnimalNeed(id))
+            player.animalLv[id]+=1
+        }
+        else{
+            logs.push("兽符不足")
+        }
     }
     else{
-        logs.push("兽符不足")
+        while(1){
+            if(player.animalrune.gte(CalcAnimalNeed(id))){
+                logs.push("消耗 兽符×"+format(CalcAnimalNeed(id))+" 成功升阶神兽")
+                player.animalrune=player.animalrune.sub(CalcAnimalNeed(id))
+                player.animalLv[id]+=1
+            }
+            else{
+                logs.push("兽符不足")
+                return
+            }
+        }
     }
 }
 function QianDao(){
@@ -606,6 +643,34 @@ function UpgradeSoldier(id,type){
             }
             else{
                 logs.push("兵符不足")
+                return
+            }
+        }
+    }
+}
+function CalcSpiritNeed(id){
+    return CalcNeed(player.spiritLv[id]/(5/(id+1))).floor()
+}
+function UpgradeSpirit(id,type){
+    if(type==0){
+        if(player.spirit.gte(CalcSpiritNeed(id))){
+            logs.push("消耗 魂魄×"+format(CalcSpiritNeed(id))+" 成功升级"+spiritName[id])
+            player.spirit=player.spirit.sub(CalcSpiritNeed(id))
+            player.spiritLv[id]+=1
+        }
+        else{
+            logs.push("魂魄不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.spirit.gte(CalcSpiritNeed(id))){
+                logs.push("消耗 魂魄×"+format(CalcSpiritNeed(id))+" 成功升级"+spiritName[id])
+                player.spirit=player.spirit.sub(CalcSpiritNeed(id))
+                player.spiritLv[id]+=1
+            }
+            else{
+                logs.push("魂魄不足")
                 return
             }
         }
