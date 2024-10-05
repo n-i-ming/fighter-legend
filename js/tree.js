@@ -227,6 +227,11 @@ addLayer("tree-tab",{
                 str+="装甲部件从2000级怪物起开始掉落<br>"
                 str+="<br>"
             }
+            else if(player.nowBigTab=="宝珠"){
+                str+="拥有宝珠碎片 "+format(player.orb,0)+"<br>"
+                str+="宝珠碎片从3000级怪物起开始掉落<br>"
+                str+="<br>"
+            }
             return str
         }],
         ["display-text",function(){
@@ -374,6 +379,14 @@ addLayer("tree-tab",{
                 str+="机炮每次攻击会令护盾值变为原先护盾值和生命值之和的两倍<br>"
                 str+="护盾值可以减免等量伤害<br>"
                 str+="护盾值在受到一次伤害后清零<br>"
+            }
+            else if(player.nowBigTab=="宝珠"){
+                str+="<table>"
+                str+="<tr><td style='width:200px;text-align:left'>生机宝珠·"+player.orbLv+"级</td>"
+                str+="<td style='width:150px;text-align:left'>生命×"+format(n(2).pow(player.orbLv),0)+"</td>"
+                str+="<td style='width:150px;text-align:left'>经验收益+"+format(n(1).add(player.orbLv*0.01).sub(1).mul(100),0)+"%</td>"
+                str+="<td style='width:250px;text-align:right'>消耗宝珠碎片×"+format(CalcOrbNeed(),0)+"</td><td><button onclick='UpgradeOrb(1)'>连续升级</button></td></tr>"
+                str+="</table>"
             }
             return str
         }],

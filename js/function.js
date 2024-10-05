@@ -35,9 +35,13 @@ function CalcAttribute(){
         player.atk=player.atk.mul(n(1.1).pow(Math.max(0,player.partLv[i])))
     }
 
+    player.hp=player.hp.mul(n(2).pow(player.orbLv))
+
     player.atkSpeed=5
     player.dropLuck=1
     player.expmoneyMul=1
+    player.expMul=n(1)
+    player.moneyMul=n(1)
     player.skillLuck=1
     player.qiandaoMul=n(2)
     player.qiandaoCD=86400
@@ -107,6 +111,8 @@ function CalcAttribute(){
         player.swordCD=7
     }
 
+    player.expMul=player.expMul.mul(n(1).add(0.01*player.orbLv))
+
     player.atk=player.atk.mul(player.qiandaoMul.pow(player.qiandaoTimes))
     player.hp=player.hp.mul(player.qiandaoMul.pow(player.qiandaoTimes))
 }
@@ -138,10 +144,10 @@ function ResetFight(){
 }
 function DealDamage(str,dmg,extra){
     if(str=="me"){
-        dropList.push([random()*550,random()*450,"经验",n(10).mul(player.monsterLv+1).mul(player.expmoneyMul),0])
-        player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul))
-        dropList.push([random()*550,random()*450,"金钱",n(dmg).mul(player.expmoneyMul),0])
-        player.money=player.money.add(n(dmg).mul(player.expmoneyMul))
+        dropList.push([random()*550,random()*450,"经验",n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(player.expMul),0])
+        player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(player.expMul))
+        dropList.push([random()*550,random()*450,"金钱",n(dmg).mul(player.expmoneyMul).mul(player.moneyMul),0])
+        player.money=player.money.add(n(dmg).mul(player.expmoneyMul).mul(player.moneyMul))
         let ls=ThingList()
         for(let i=0;i<ls.length;i++){
             if(random()<=5*player.dropLuck/1000){
@@ -180,8 +186,8 @@ function ThingList(){
 }
 function DealGet(dif){
     let tms=Math.floor(dif*player.atkSpeed)
-    player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(tms))
-    player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms))
+    player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(tms).mul(player.expMul))
+    player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms).mul(player.moneyMul))
     let swordTimes=Math.floor(dif/player.swordCD)
     ResetFight()
     for(let i=0;i<swordTimes;i++){
@@ -412,7 +418,13 @@ const ExpNeed=[
     [70000,n(1.6e7)],[80000,n(1.8e7)],[90000,n(2e7)],[100000,n(2.5e7)],[110000,n(3e7)],[120000,n(3.5e7)],[130000,n(4e7)],[140000,n(4.5e7)],
     [150000,n(5e7)],[160000,n(5.5e7)],[170000,n(6e7)],[180000,n(6.5e7)],[190000,n(7e7)],[200000,n(7.5e7)],[210000,n(8e7)],[220000,n(8.5e7)],
     [230000,n(9e7)],[240000,n(9.5e7)],[250000,n(1e8)],[260000,n(1.1e8)],[270000,n(1.2e8)],[280000,n(1.3e8)],[290000,n(1.4e8)],[300000,n(1.5e8)],
-    [3.1e5,n(1.6e8)],[3.2e5,n(1.7e8)],[3.3e5,n(1.8e8)],[3.4e5,n(1.9e8)],[3.5e5,n(2.0e8)],
+    [3.1e5,n(1.6e8)],[3.2e5,n(1.7e8)],[3.3e5,n(1.8e8)],[3.4e5,n(1.9e8)],[3.5e5,n(2.0e8)],[3.6e5,n(2.1e8)],[3.7e5,n(2.2e8)],[3.8e5,n(2.3e8)],[3.9e5,n(2.4e8)],[4.0e5,n(2.5e8)],
+    [4.1e5,n(2.6e8)],[4.2e5,n(2.7e8)],[4.3e5,n(2.8e8)],[4.4e5,n(2.9e8)],[4.5e5,n(3.0e8)],[4.6e5,n(3.1e8)],[4.7e5,n(3.2e8)],[4.8e5,n(3.3e8)],[4.9e5,n(3.4e8)],[5.0e5,n(3.5e8)],
+    [5.1e5,n(3.6e8)],[5.2e5,n(3.7e8)],[5.3e5,n(3.8e8)],[5.4e5,n(3.9e8)],[5.5e5,n(4.0e8)],[5.6e5,n(4.1e8)],[5.7e5,n(4.2e8)],[5.8e5,n(4.3e8)],[5.9e5,n(4.4e8)],[6.0e5,n(4.5e8)],
+    [6.1e5,n(4.6e8)],[6.2e5,n(4.7e8)],[6.3e5,n(4.8e8)],[6.4e5,n(4.9e8)],[6.5e5,n(5.0e8)],[6.6e5,n(5.1e8)],[6.7e5,n(5.2e8)],[6.8e5,n(5.3e8)],[6.9e5,n(5.4e8)],[7.0e5,n(5.5e8)],
+    [7.1e5,n(5.6e8)],[7.2e5,n(5.7e8)],[7.3e5,n(5.8e8)],[7.4e5,n(5.9e8)],[7.5e5,n(6.0e8)],[7.6e5,n(6.1e8)],[7.7e5,n(6.2e8)],[7.8e5,n(6.3e8)],[7.9e5,n(6.4e8)],[8.0e5,n(6.5e8)],
+    [8.1e5,n(6.6e8)],[8.2e5,n(6.7e8)],[8.3e5,n(6.8e8)],[8.4e5,n(6.9e8)],[8.5e5,n(7.0e8)],[8.6e5,n(7.1e8)],[8.7e5,n(7.2e8)],[8.8e5,n(7.3e8)],[8.9e5,n(7.4e8)],[9.0e5,n(7.5e8)],
+    [9.1e5,n(7.6e8)],[9.2e5,n(7.7e8)],[9.3e5,n(7.8e8)],[9.4e5,n(7.9e8)],[9.5e5,n(8.0e8)],[9.6e5,n(8.2e8)],[9.7e5,n(8.4e8)],[9.8e5,n(8.6e8)],[9.9e5,n(8.8e8)],[1.00e6,n(9.0e8)],
 ]
 function CalcExpNeed(x){
     for(let i=0;i<ExpNeed.length;i++){
@@ -728,6 +740,34 @@ function UpgradePart(id,type){
             }
             else{
                 logs.push("装甲部件不足")
+                return
+            }
+        }
+    }
+}
+function CalcOrbNeed(){
+    return CalcNeed(player.orbLv/5).mul(10)
+}
+function UpgradeOrb(type){
+    if(type==0){
+        if(player.orb.gte(CalcOrbNeed())){
+            logs.push("消耗 宝珠碎片×"+format(CalcOrbNeed())+" 成功升级生机宝珠")
+            player.orb=player.orb.sub(CalcOrbNeed())
+            player.orbLv+=1
+        }
+        else{
+            logs.push("宝珠碎片不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.orb.gte(CalcOrbNeed())){
+                logs.push("消耗 宝珠碎片×"+format(CalcOrbNeed())+" 成功升级生机宝珠")
+                player.orb=player.orb.sub(CalcOrbNeed())
+                player.orbLv+=1
+            }
+            else{
+                logs.push("宝珠碎片不足")
                 return
             }
         }
