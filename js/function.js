@@ -195,7 +195,21 @@ function ThingList(){
 }
 function DealGet(dif){
     let tms=Math.floor(dif*player.atkSpeed)
-    player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(tms).mul(player.expMul))
+    let ntms=tms
+    for(let i=0;i<4;i++){
+        if(player.animalLv[i]>0){
+            ntms+=tms/5
+        }
+    }
+    for(let i=0;i<4;i++){
+        if(player.partLv[i]>0){
+            ntms+=tms/10
+        }
+    }
+    if(player.swordLv>=10){
+        ntms+=tms/player.swordCD
+    }
+    player.exp=player.exp.add(n(10).mul(player.monsterLv+1).mul(player.expmoneyMul).mul(ntms).mul(player.expMul))
     player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms).mul(player.moneyMul))
     let swordTimes=Math.floor(dif/player.swordCD)
     ResetFight()
