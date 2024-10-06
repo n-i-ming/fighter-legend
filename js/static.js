@@ -4,6 +4,7 @@ function addedPlayerData() { return {
     seed1:Math.floor(Math.random()*4294967296),seed2:Math.floor(Math.random()*4294967296),
     seed3:Math.floor(Math.random()*4294967296),seed4:Math.floor(Math.random()*4294967296),
     nowBigTab:"属性",fightSub:0,dropLuck:1,expmoneyMul:1,exchangeCodeList:[],toggle:[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    expMul:n(1),moneyMul:n(1),thingMul:n(1),
     skillLuck:1,qiandaoTimes:0,qiandaoTime:0,qiandaoMul:n(1.1),qiandaoCD:86400,
     lv:0,hp:n(0),atk:n(0),hpnow:n(0),shield:n(0),
     atkSpeed:5,atkTime:0,
@@ -16,7 +17,7 @@ function addedPlayerData() { return {
 
     weaponLv:[0,0],clothLv:[0,0],skillLv:[0,0,0,0,0],animalLv:[0,0,0,0],animalAtkTime:[0,0,0,0],
     gemLv:[0,0],swordLv:0,swordAtkTime:0,swordCD:10,swordPower:0,soldierLv:[0,0,0,0,0],spiritLv:[0,0,0,0,0],spiritPoint:n(0),
-    partLv:[-1,-1,-1,-1],partAtkTime:[0,0,0,0],orbLv:0,
+    partLv:[-1,-1,-1,-1],partAtkTime:[0,0,0,0],orbLv:0,orb1Lv:0,
 }}
 
 const subTabList=[

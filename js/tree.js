@@ -386,6 +386,11 @@ addLayer("tree-tab",{
                 str+="<td style='width:150px;text-align:left'>生命×"+format(n(2).pow(player.orbLv),0)+"</td>"
                 str+="<td style='width:150px;text-align:left'>经验收益+"+format(n(1).add(player.orbLv*0.01).sub(1).mul(100),0)+"%</td>"
                 str+="<td style='width:250px;text-align:right'>消耗宝珠碎片×"+format(CalcOrbNeed(),0)+"</td><td><button onclick='UpgradeOrb(1)'>连续升级</button></td></tr>"
+                
+                str+="<tr><td style='width:200px;text-align:left'>切割宝珠·"+player.orb1Lv+"级</td>"
+                str+="<td style='width:150px;text-align:left'>金币收益×"+format(n(2).pow(player.orb1Lv),0)+"</td>"
+                str+="<td style='width:150px;text-align:left'>材料收益+"+format(n(1).add(player.orb1Lv*0.01).sub(1).mul(100),0)+"%</td>"
+                str+="<td style='width:250px;text-align:right'>消耗宝珠碎片×"+format(CalcOrb1Need(),0)+"</td><td><button onclick='UpgradeOrb1(1)'>连续升级</button></td></tr>"
                 str+="</table>"
             }
             return str

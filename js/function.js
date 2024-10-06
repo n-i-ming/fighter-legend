@@ -47,6 +47,7 @@ function CalcAttribute(){
     player.qiandaoCD=86400
     player.swordCD=10
     player.swordPer=n(1.01)
+    player.thingMul=n(1)
     if(player.exchangeCodeList.includes("794a01ec79ccc88dd1492824822c5b3d9ab049cae238eebd71db87295878ce91")){
         player.atkSpeed+=45
         player.dropLuck*=20
@@ -118,6 +119,8 @@ function CalcAttribute(){
     player.swordPower=player.swordPer.pow(Math.floor(player.swordLv/10)).min(1000)
 
     player.expMul=player.expMul.mul(n(1).add(0.01*player.orbLv))
+    player.moneyMul=player.moneyMul.mul(n(2).pow(player.orb1Lv))
+    player.thingMul=player.thingMul.mul(n(1).add(0.01*player.orb1Lv))
 
     player.atk=player.atk.mul(player.qiandaoMul.pow(player.qiandaoTimes))
     player.hp=player.hp.mul(player.qiandaoMul.pow(player.qiandaoTimes))
@@ -185,7 +188,7 @@ function ThingList(){
     let ls=[]
     for(let i=0;i<things.length;i++){
         if(player.monsterLv>=things[i][1]){
-            ls.push([i,n(1+Math.floor((player.monsterLv-things[i][1])/100)).mul(n(2).pow(Math.floor((player.monsterLv-things[i][1])/1000)))])
+            ls.push([i,n(1+Math.floor((player.monsterLv-things[i][1])/100)).mul(n(2).pow(Math.floor((player.monsterLv-things[i][1])/1000))).mul(player.thingMul)])
         }
     }
     return ls
@@ -446,10 +449,15 @@ const ExpNeed=[
     [2.20e6,n(3.30e9)],[2.21e6,n(3.32e9)],[2.22e6,n(3.34e9)],[2.23e6,n(3.36e9)],[2.24e6,n(3.38e9)],[2.25e6,n(3.40e9)],[2.26e6,n(3.42e9)],[2.27e6,n(3.44e9)],[2.28e6,n(3.46e9)],[2.29e6,n(3.48e9)],
     [2.30e6,n(3.50e9)],[2.31e6,n(3.52e9)],[2.32e6,n(3.54e9)],[2.33e6,n(3.56e9)],[2.34e6,n(3.58e9)],[2.35e6,n(3.60e9)],[2.36e6,n(3.62e9)],[2.37e6,n(3.64e9)],[2.38e6,n(3.66e9)],[2.39e6,n(3.68e9)],
     [2.40e6,n(3.70e9)],[2.41e6,n(3.72e9)],[2.42e6,n(3.74e9)],[2.43e6,n(3.76e9)],[2.44e6,n(3.78e9)],[2.45e6,n(3.80e9)],[2.46e6,n(3.82e9)],[2.47e6,n(3.84e9)],[2.48e6,n(3.86e9)],[2.49e6,n(3.88e9)],
-    [2.50e6,n(3.90e9)]
+    [2.50e6,n(3.90e9)],[2.55e6,n(4.0e9)],
+    [2.60e6,n(4.2e9)],[2.65e6,n(4.4e9)],[2.70e6,n(4.6e9)],[2.75e6,n(4.8e9)],[2.80e6,n(5.0e9)],[2.85e6,n(5.2e9)],[2.90e6,n(5.4e9)],[2.95e6,n(5.6e9)],[3.00e6,n(5.8e9)],
+    [3.05e6,n(6.0e9)],[3.10e6,n(6.0e9)],[3.15e6,n(6.2e9)],[3.20e6,n(6.4e9)],[3.25e6,n(6.6e9)],[3.30e6,n(6.8e9)],[3.35e6,n(7.0e9)],[3.4e6,n(7.5e9)],[3.5e6,n(8.0e9)],
+    [3.6e6,n(8.5e9)],[3.7e6,n(9.0e9)],[3.8e6,n(9.5e9)],[3.9e6,n(1.0e10)],[4.0e6,n(1.1e10)],[4.2e6,n(1.2e10)],[4.4e6,n(1.3e10)],[4.6e6,n(1.4e10)],[4.8e6,n(1.5e10)],
+    [5.0e6,n(1.6e10)],[5.2e6,n(1.7e10)],[5.4e6,n(1.8e10)],[5.6e6,n(1.9e10)],[5.8e6,n(2.0e10)],[6.0e6,n(2.1e10)],
 ]
+let lst=0
 function CalcExpNeed(x){
-    for(let i=0;i<ExpNeed.length;i++){
+    for(let i=lst;i<ExpNeed.length;i++,lst++){
         if(x<ExpNeed[i][0]){
             return ExpNeed[i][1]
         }
@@ -457,6 +465,10 @@ function CalcExpNeed(x){
     return n(1e308)
 }
 function AutoUpgrade(){
+    while(player.exp.gte(CalcExpNeed(player.lv).mul(100))){
+        player.exp=player.exp.sub(CalcExpNeed(player.lv).mul(100))
+        player.lv+=100
+    }
     while(player.exp.gte(CalcExpNeed(player.lv))){
         player.exp=player.exp.sub(CalcExpNeed(player.lv))
         player.lv+=1
@@ -787,6 +799,34 @@ function UpgradeOrb(type){
                 logs.push("消耗 宝珠碎片×"+format(CalcOrbNeed())+" 成功升级生机宝珠")
                 player.orb=player.orb.sub(CalcOrbNeed())
                 player.orbLv+=1
+            }
+            else{
+                logs.push("宝珠碎片不足")
+                return
+            }
+        }
+    }
+}
+function CalcOrb1Need(){
+    return CalcNeed(player.orb1Lv*2).mul(10)
+}
+function UpgradeOrb1(type){
+    if(type==0){
+        if(player.orb.gte(CalcOrb1Need())){
+            logs.push("消耗 宝珠碎片×"+format(CalcOrb1Need())+" 成功升级切割宝珠")
+            player.orb=player.orb.sub(CalcOrb1Need())
+            player.orb1Lv+=1
+        }
+        else{
+            logs.push("宝珠碎片不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.orb.gte(CalcOrb1Need())){
+                logs.push("消耗 宝珠碎片×"+format(CalcOrb1Need())+" 成功升级切割宝珠")
+                player.orb=player.orb.sub(CalcOrb1Need())
+                player.orb1Lv+=1
             }
             else{
                 logs.push("宝珠碎片不足")
