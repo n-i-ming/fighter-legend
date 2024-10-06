@@ -135,25 +135,25 @@ addLayer("tree-tab",{
                 str+="<button onclick='DealExchangeCode()'>确认</button>"
                 str+="<br><br>"
                 if(player.exchangeCodeList.includes("794a01ec79ccc88dd1492824822c5b3d9ab049cae238eebd71db87295878ce91")){
-                    str+="飞天爽会员<br>经验金钱收益+550%<br>攻速+45<br>材料掉落概率加19倍<br>技能触发概率+19%<br>签到收益提升至×50<br>签到间隔缩短至12h<br>破灭冷却缩短至0.5s<br>破灭效果翻倍<br>"
+                    str+="飞天爽会员<br>经验金钱收益+550%<br>攻速+45<br>材料掉落概率加19倍<br>技能触发概率+19%<br>签到收益提升至×50<br>签到间隔缩短至12h<br>破灭冷却缩短至0.5s<br>破灭效果提升至每阶/1.2<br>"
                 }
                 else if(player.exchangeCodeList.includes("1516e9db625c9b9d95db1f211c58347b198901a3c4ac6949e66039db138954ac")){
-                    str+="超极爽会员<br>经验金钱收益+400%<br>攻速+35<br>材料掉落概率加14倍<br>技能触发概率+14%<br>签到收益提升至×20<br>签到间隔缩短至12h<br>破灭冷却缩短至0.75s<br>破灭效果翻倍<br>"
+                    str+="超极爽会员<br>经验金钱收益+400%<br>攻速+35<br>材料掉落概率加14倍<br>技能触发概率+14%<br>签到收益提升至×20<br>签到间隔缩短至12h<br>破灭冷却缩短至0.75s<br>破灭效果提升至每阶/1.15<br>"
                 }
                 else if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
-                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>签到收益提升至×10<br>签到间隔缩短至12h<br>破灭冷却缩短至1s<br>破灭效果翻倍<br>"
+                    str+="极爽会员<br>经验金钱收益+250%<br>攻速+25<br>材料掉落概率加9倍<br>技能触发概率+9%<br>签到收益提升至×10<br>签到间隔缩短至12h<br>破灭冷却缩短至1s<br>破灭效果提升至每阶/1.10<br>"
                 }
                 else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
-                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>签到收益提升至×7<br>签到间隔缩短至12h<br>破灭冷却缩短至2s<br>"
+                    str+="超爽会员<br>经验金钱收益+150%<br>攻速+15<br>材料掉落概率加5倍<br>技能触发概率+5%<br>签到收益提升至×7<br>签到间隔缩短至12h<br>破灭冷却缩短至2s<br>破灭效果提升至每阶/1.07<br>"
                 }
                 else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
-                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>签到收益提升至×5<br>破灭冷却缩短至3s<br>"
+                    str+="很爽会员<br>经验金钱收益+100%<br>攻速+10<br>材料掉落概率加3倍<br>技能触发概率+3%<br>签到收益提升至×5<br>破灭冷却缩短至3s<br>破灭效果提升至每阶/1.05<br>"
                 }
                 else if(player.exchangeCodeList.includes("dcc8111b8017e31dbd35ad4aad96be2ca3b83d3c901e52d4a95710542c71f81b")){
-                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>签到收益提升至×4<br>破灭冷却缩短至5s<br>"
+                    str+="略爽会员<br>经验金钱收益+50%<br>攻速+5<br>材料掉落概率加2倍<br>技能触发概率+2%<br>签到收益提升至×4<br>破灭冷却缩短至5s<br>破灭效果提升至每阶/1.03<br>"
                 }
                 else if(player.exchangeCodeList.includes("a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16")){
-                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>签到收益提升至×3<br>破灭冷却缩短至7s<br>"
+                    str+="微爽会员<br>经验金钱收益+20%<br>攻速+2<br>材料掉落概率加1倍<br>技能触发概率+1%<br>签到收益提升至×3<br>破灭冷却缩短至7s<br>破灭效果提升至每阶/1.02<br>"
                 }
             }
             else if(player.nowBigTab=="设置"){
@@ -326,7 +326,7 @@ addLayer("tree-tab",{
                 +"级·破灭之刃</td><td style='width:150px;text-align:left'>攻击+"+format(n(1.1).pow(player.swordLv).sub(1).mul(100),0)+"%</td>"
                 +"<td style='width:250px;text-align:right'>消耗精钢×"+format(CalcSwordNeed(),0)+"</td><td><button onclick='UpgradeSword(1)'>连续升级</button></td></tr>"
                 str+="</table>"
-                str+="<br>每"+player.swordCD+"秒发射一道伤害值为怪物当前生命"+format(player.swordPower,1)+"%的剑气(不超过"+format(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100))+")"
+                str+="<br>每"+player.swordCD+"秒发射一道伤害值为怪物当前生命/"+format(player.swordPower,1)+"的剑气"
             }
             else if(player.nowBigTab=="士兵"){
                 str+="<table>"

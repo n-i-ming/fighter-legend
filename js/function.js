@@ -46,7 +46,7 @@ function CalcAttribute(){
     player.qiandaoMul=n(2)
     player.qiandaoCD=86400
     player.swordCD=10
-    player.swordPower=Math.min(49.5,0.5*Math.floor(player.swordLv/10))
+    player.swordPer=n(1.01)
     if(player.exchangeCodeList.includes("794a01ec79ccc88dd1492824822c5b3d9ab049cae238eebd71db87295878ce91")){
         player.atkSpeed+=45
         player.dropLuck*=20
@@ -55,7 +55,7 @@ function CalcAttribute(){
         player.qiandaoMul=n(50)
         player.qiandaoCD=43200
         player.swordCD=0.5
-        player.swordPower*=2
+        player.swordPer=n(1.2)
     }
     else if(player.exchangeCodeList.includes("1516e9db625c9b9d95db1f211c58347b198901a3c4ac6949e66039db138954ac")){
         player.atkSpeed+=35
@@ -65,7 +65,7 @@ function CalcAttribute(){
         player.qiandaoMul=n(20)
         player.qiandaoCD=43200
         player.swordCD=0.75
-        player.swordPower*=2
+        player.swordPer=n(1.15)
     }
     else if(player.exchangeCodeList.includes("67b19dc018f9d3bd3e60411f8c526680d790c9b7857d165d75623d594bb22385")){
         player.atkSpeed+=25
@@ -75,7 +75,7 @@ function CalcAttribute(){
         player.qiandaoMul=n(10)
         player.qiandaoCD=43200
         player.swordCD=1
-        player.swordPower*=2
+        player.swordPer=n(1.10)
     }
     else if(player.exchangeCodeList.includes("ca2e83f083234c985da5e82f10ac733e1b6efd05683766539260fdb8b9a4f1ed")){
         player.atkSpeed+=20
@@ -85,6 +85,7 @@ function CalcAttribute(){
         player.qiandaoMul=n(7)
         player.qiandaoCD=43200
         player.swordCD=2
+        player.swordPer=n(1.07)
     }
     else if(player.exchangeCodeList.includes("04a83db3606e208c09a2410fa764cfdc76639427377b18faac308535e499760c")){
         player.atkSpeed+=10
@@ -93,6 +94,7 @@ function CalcAttribute(){
         player.skillLuck+=3
         player.qiandaoMul=n(5)
         player.swordCD=3
+        player.swordPer=n(1.05)
     }
     else if(player.exchangeCodeList.includes("dcc8111b8017e31dbd35ad4aad96be2ca3b83d3c901e52d4a95710542c71f81b")){
         player.atkSpeed+=5
@@ -101,6 +103,7 @@ function CalcAttribute(){
         player.skillLuck+=2
         player.qiandaoMul=n(4)
         player.swordCD=5
+        player.swordPer=n(1.03)
     }
     else if(player.exchangeCodeList.includes("a9633b80fceaf953fcbd4ba85936e5d26cd00514ab438f3e07825ab74ccb4e16")){
         player.atkSpeed+=5
@@ -109,7 +112,10 @@ function CalcAttribute(){
         player.skillLuck+=1
         player.qiandaoMul=n(3)
         player.swordCD=7
+        player.swordPer=n(1.02)
     }
+
+    player.swordPower=player.swordPer.pow(Math.floor(player.swordLv/10)).min(1000)
 
     player.expMul=player.expMul.mul(n(1).add(0.01*player.orbLv))
 
@@ -232,7 +238,7 @@ function DealFight(dif){
         if(damageDrawList[i][1]>=1){
             let damage=(damageDrawList[i][0]=="me"?player.atk:player.monsterAtk).mul(damageDrawList[i][4])
             if(damageDrawList[i][2]=="sword"){
-                damage=player.monsterHp.mul(player.swordPower).div(100).min(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100))
+                damage=player.monsterHp.mul(player.swordPower.sub(1)).div(player.swordPower)
             }
             else if(damageDrawList[i][0]=="me" && player.kuangbaoTime>0){
                 damage=damage.mul(5)
@@ -425,6 +431,11 @@ const ExpNeed=[
     [7.1e5,n(5.6e8)],[7.2e5,n(5.7e8)],[7.3e5,n(5.8e8)],[7.4e5,n(5.9e8)],[7.5e5,n(6.0e8)],[7.6e5,n(6.1e8)],[7.7e5,n(6.2e8)],[7.8e5,n(6.3e8)],[7.9e5,n(6.4e8)],[8.0e5,n(6.5e8)],
     [8.1e5,n(6.6e8)],[8.2e5,n(6.7e8)],[8.3e5,n(6.8e8)],[8.4e5,n(6.9e8)],[8.5e5,n(7.0e8)],[8.6e5,n(7.1e8)],[8.7e5,n(7.2e8)],[8.8e5,n(7.3e8)],[8.9e5,n(7.4e8)],[9.0e5,n(7.5e8)],
     [9.1e5,n(7.6e8)],[9.2e5,n(7.7e8)],[9.3e5,n(7.8e8)],[9.4e5,n(7.9e8)],[9.5e5,n(8.0e8)],[9.6e5,n(8.2e8)],[9.7e5,n(8.4e8)],[9.8e5,n(8.6e8)],[9.9e5,n(8.8e8)],[1.00e6,n(9.0e8)],
+    [1.01e6,n(9.2e8)],[1.02e6,n(9.4e8)],[1.03e6,n(9.6e8)],[1.04e6,n(9.8e8)],[1.05e6,n(1.00e9)],[1.06e6,n(1.02e9)],[1.07e6,n(1.04e9)],[1.08e6,n(1.06e9)],[1.09e6,n(1.08e9)],[1.10e6,n(1.10e9)],
+    [1.11e6,n(1.12e9)],[1.12e6,n(1.14e9)],[1.13e6,n(1.16e9)],[1.14e6,n(1.18e9)],[1.15e6,n(1.20e9)],[1.16e6,n(1.22e9)],[1.17e6,n(1.24e9)],[1.18e6,n(1.26e9)],[1.19e6,n(1.28e9)],[1.20e6,n(1.30e9)],
+    [1.21e6,n(1.32e9)],[1.22e6,n(1.34e9)],[1.23e6,n(1.36e9)],[1.24e6,n(1.38e9)],[1.25e6,n(1.40e9)],[1.26e6,n(1.42e9)],[1.27e6,n(1.44e9)],[1.28e6,n(1.46e9)],[1.29e6,n(1.48e9)],[1.30e6,n(1.50e9)],
+    [1.31e6,n(1.52e9)],[1.32e6,n(1.54e9)],[1.33e6,n(1.56e9)],[1.34e6,n(1.58e9)],[1.35e6,n(1.60e9)],[1.36e6,n(1.62e9)],[1.37e6,n(1.64e9)],[1.38e6,n(1.66e9)],[1.39e6,n(1.68e9)],[1.40e6,n(1.70e9)],
+    [1.41e6,n(1.72e9)],[1.42e6,n(1.74e9)],[1.43e6,n(1.76e9)],[1.44e6,n(1.78e9)],[1.45e6,n(1.80e9)],[1.46e6,n(1.82e9)],[1.47e6,n(1.84e9)],[1.48e6,n(1.86e9)],[1.49e6,n(1.88e9)],[1.50e6,n(1.90e9)],
 ]
 function CalcExpNeed(x){
     for(let i=0;i<ExpNeed.length;i++){
