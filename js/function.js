@@ -31,6 +31,11 @@ function CalcAttribute(){
     player.atk=player.atk.mul(n(1.01).pow(player.spiritPoint))
     player.hp=player.hp.mul(n(1.01).pow(player.spiritPoint))
 
+    player.daggerPoint=n(0)
+    for(let i=0;i<4;i++){
+        player.daggerPoint=player.daggerPoint.add(player.daggerLv[i]*(i+1))
+    }
+
     for(let i=0;i<4;i++){
         player.atk=player.atk.mul(n(1.1).pow(Math.max(0,player.partLv[i])))
     }
@@ -158,6 +163,7 @@ function ResetFight(){
     player.monsterAtk=x
     player.hpnow=player.hp
     player.kuangbaoTime=0
+    player.daggerLevel=n(0)
 }
 function DealDamage(str,dmg,extra){
     if(str=="me"){
@@ -175,6 +181,7 @@ function DealDamage(str,dmg,extra){
     }
     damageList.push([str,random()*(-150)+50,random()*(-100)-20,n(dmg),0,extra])
     if(str=="me"){
+        player.daggerLevel=player.daggerLevel.add(player.daggerPoint)
         player.monsterHp=player.monsterHp.sub(dmg)
         if(player.monsterHp.lt(0)){
             player.monsterLv+=1
@@ -265,8 +272,10 @@ function DealFight(dif){
             if(damageDrawList[i][2]=="sword"){
                 damage=player.monsterHp.mul(player.swordPower.sub(1)).div(player.swordPower)
             }
-            else if(damageDrawList[i][0]=="me" && player.kuangbaoTime>0){
+            else if(damageDrawList[i][0]=="me"){
+                if(player.kuangbaoTime>0)
                 damage=damage.mul(5)
+                damage=damage.mul(n(1.01).pow(player.daggerLevel))
             }
             if(damageDrawList[i][2]=="part"){
                 player.shield=player.hpnow.add(player.shield).mul(2)
@@ -368,6 +377,11 @@ function DrawFight(){
     str+="<td style='width:150px;text-align:left'>"+(player.kuangbaoTime>0?"<text style='color:red'>狂暴</text>":"")+"</td>"
     str+="<td style='width:300px;text-align:left'>　</td>"
     str+="<td style='width:150px;text-align:right'>"+(player.zhendangTime>0?"<text style='color:blue'>震荡</text>":"")+"</td>"
+    str+="</tr>"
+    str+="<tr>"
+    str+="<td style='width:150px;text-align:left'>　</td>"
+    str+="<td style='width:300px;text-align:left'>　</td>"
+    str+="<td style='width:150px;text-align:right'>"+(player.daggerLevel.gt(0)?"碎甲×"+format(player.daggerLevel):"")+"</td>"
     str+="</tr>"
     str+="</table>"
     for(let i=0;i<dropList.length;i++){
@@ -888,6 +902,34 @@ function UpgradeOrb1(type){
             }
             else{
                 logs.push("宝珠碎片不足")
+                return
+            }
+        }
+    }
+}
+function CalcDaggerNeed(id){
+    return CalcNeed(player.daggerLv[id]*(id+1)*10).mul(10)
+}
+function UpgradeDagger(id,type){
+    if(type==0){
+        if(player.dagger.gte(CalcDaggerNeed(id))){
+            logs.push("消耗 断匕×"+format(CalcDaggerNeed(id))+" 成功升阶碎甲之"+["剑","刀","斧","锤"][id])
+            player.dagger=player.dagger.sub(CalcDaggerNeed(id))
+            player.daggerLv[id]+=1
+        }
+        else{
+            logs.push("断匕不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.dagger.gte(CalcDaggerNeed(id))){
+                logs.push("消耗 断匕×"+format(CalcDaggerNeed(id))+" 成功升阶碎甲之"+["剑","刀","斧","锤"][id])
+                player.dagger=player.dagger.sub(CalcDaggerNeed(id))
+                player.daggerLv[id]+=1
+            }
+            else{
+                logs.push("断匕不足")
                 return
             }
         }

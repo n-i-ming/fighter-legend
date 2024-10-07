@@ -232,6 +232,15 @@ addLayer("tree-tab",{
                 str+="宝珠碎片从3000级怪物起开始掉落<br>"
                 str+="<br>"
             }
+            else if(player.nowBigTab=="碎甲"){
+                str+="拥有断匕 "+format(player.dagger,0)+"<br>"
+                str+="断匕从4000级怪物起开始掉落<br>"
+                str+="<br>"
+                str+="每点碎甲使每次攻击叠一层碎甲状态<br>"
+                str+="每层碎甲状态使非破灭攻击伤害独立提升1%<br>"
+                str+="你总计拥有"+format(player.daggerPoint,0)+"点碎甲<br>"
+                str+="<br>"
+            }
             return str
         }],
         ["display-text",function(){
@@ -393,6 +402,19 @@ addLayer("tree-tab",{
                 str+="<td style='width:150px;text-align:left'>金币收益×"+format(n(2).pow(player.orb1Lv),0)+"</td>"
                 str+="<td style='width:150px;text-align:left'>材料收益+"+format(n(1).add(player.orb1Lv*0.01).sub(1).mul(100),0)+"%</td>"
                 str+="<td style='width:250px;text-align:right'>消耗宝珠碎片×"+format(CalcOrb1Need(),0)+"</td><td><button onclick='UpgradeOrb1(1)'>连续升级</button></td></tr>"
+                str+="</table>"
+            }
+            else if(player.nowBigTab=="碎甲"){
+                str+="<table>"
+                for(let i=0;i<4;i++){
+                    str+="<tr>"
+                    str+="<td style='width:150px;text-align:left'>碎甲之"+["剑","刀","斧","锤"][i]+"·"+player.daggerLv[i]+"阶</td>"
+                    str+="<td style='width:150px;text-align:left'>碎甲+"+format(player.daggerLv[i]*(i+1),0)+"点</td>"
+                    str+="<td style='width:100px'></td>"
+                    str+="<td style='width:250px;text-align:right'>消耗 断匕×"+format(CalcDaggerNeed(i),0)+" <button onclick='UpgradeDagger("+i+",0)'>升阶</button>"
+                    +"</td><td><button style='margin-left:-10px' onclick='UpgradeDagger("+i+",1)'>一键升阶</button></td>"
+                    str+="</tr>"
+                }
                 str+="</table>"
             }
             return str
