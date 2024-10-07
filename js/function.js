@@ -145,7 +145,14 @@ function ResetFight(){
     x=x.mul(n(8).pow(Math.max(0,Math.min(player.monsterLv-50000,5000))))
     x=x.mul(n(10).pow(Math.max(0,Math.min(player.monsterLv-55000,5000))))
     x=x.mul(n(12).pow(Math.max(0,Math.min(player.monsterLv-60000,5000))))
-    x=x.mul(n(15).pow(Math.max(0,Math.min(player.monsterLv-65000,10000000))))
+    x=x.mul(n(15).pow(Math.max(0,Math.min(player.monsterLv-65000,5000))))
+    x=x.mul(n(20).pow(Math.max(0,Math.min(player.monsterLv-70000,5000))))
+    x=x.mul(n(25).pow(Math.max(0,Math.min(player.monsterLv-75000,5000))))
+    x=x.mul(n(30).pow(Math.max(0,Math.min(player.monsterLv-80000,5000))))
+    x=x.mul(n(40).pow(Math.max(0,Math.min(player.monsterLv-85000,5000))))
+    x=x.mul(n(50).pow(Math.max(0,Math.min(player.monsterLv-90000,5000))))
+    x=x.mul(n(75).pow(Math.max(0,Math.min(player.monsterLv-95000,5000))))
+    x=x.mul(n(100).pow(Math.max(0,Math.min(player.monsterLv-100000,1000000000))))
     player.monsterHp=x.mul(1000)
     player.monsterAtk=x
     player.hpnow=player.hp
@@ -507,6 +514,19 @@ function UpgradeWeapon(type){
             logs.push("陨铁不足")
         }
     }
+    else if(type==3){
+        while(1){
+            if(player.iron.gte(CalcWeaponNeed(1))){
+                logs.push("消耗 陨铁×"+format(CalcWeaponNeed(1))+" 成功升阶武器")
+                player.iron=player.iron.sub(CalcWeaponNeed(1))
+                player.weaponLv[0]+=1
+            }
+            else{
+                logs.push("陨铁不足")
+                break
+            }
+        }
+    }
     else if(type==1){
         if(player.money.gte(CalcWeaponNeed(0))){
             logs.push("消耗 金钱×"+format(CalcWeaponNeed(0))+" 成功升级武器")
@@ -519,7 +539,12 @@ function UpgradeWeapon(type){
     }
     else{
         while(1){
-            if(player.money.gte(CalcWeaponNeed(0))){
+            if(player.money.gte(CalcWeaponNeed(0).mul(194962390))){
+                logs.push("消耗 金钱×"+format(CalcWeaponNeed(0).mul(194962390))+" 成功升级100次武器")
+                player.money=player.money.sub(CalcWeaponNeed(0).mul(194962390))
+                player.weaponLv[1]+=1000
+            }
+            else if(player.money.gte(CalcWeaponNeed(0))){
                 logs.push("消耗 金钱×"+format(CalcWeaponNeed(0))+" 成功升级武器")
                 player.money=player.money.sub(CalcWeaponNeed(0))
                 player.weaponLv[1]+=1
@@ -550,6 +575,19 @@ function UpgradeCloth(type){
             logs.push("陨铁不足")
         }
     }
+    else if(type==3){
+        while(1){
+            if(player.iron.gte(CalcClothNeed(1))){
+                logs.push("消耗 陨铁×"+format(CalcClothNeed(1))+" 成功升阶盔甲")
+                player.iron=player.iron.sub(CalcClothNeed(1))
+                player.clothLv[0]+=1
+            }
+            else{
+                logs.push("陨铁不足")
+                break
+            }
+        }
+    }
     else if(type==1){
         if(player.money.gte(CalcClothNeed(0))){
             logs.push("消耗 金钱×"+format(CalcClothNeed(0))+" 成功升级盔甲")
@@ -562,7 +600,12 @@ function UpgradeCloth(type){
     }
     else{
         while(1){
-            if(player.money.gte(CalcClothNeed(0))){
+            if(player.money.gte(CalcClothNeed(0).mul(194962390))){
+                logs.push("消耗 金钱×"+format(CalcClothNeed(0).mul(194962390))+" 成功升级100次盔甲")
+                player.money=player.money.sub(CalcClothNeed(0).mul(194962390))
+                player.clothLv[1]+=1000
+            }
+            else if(player.money.gte(CalcClothNeed(0))){
                 logs.push("消耗 金钱×"+format(CalcClothNeed(0))+" 成功升级盔甲")
                 player.money=player.money.sub(CalcClothNeed(0))
                 player.clothLv[1]+=1
