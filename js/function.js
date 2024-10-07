@@ -222,8 +222,8 @@ function DealGet(dif){
     let swordTimes=Math.floor(dif/player.swordCD)
     ResetFight()
     for(let i=0;i<swordTimes;i++){
-        player.money=player.money.add(player.monsterHp.mul(player.swordPower).div(100).min(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100)))
-        player.monsterHp=player.monsterHp.sub(player.monsterHp.mul(player.swordPower).div(100).min(n(1e10).pow(Math.floor(player.swordLv/10)).mul(1e100)))
+        player.money=player.money.add(player.monsterHp.mul(player.swordPower.sub(1)).div(player.swordPower))
+        player.monsterHp=player.monsterHp.sub(player.monsterHp.mul(player.swordPower.sub(1)).div(player.swordPower))
         if(player.monsterHp.lt(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0]))))){
             player.monsterLv+=1
             ResetFight()
