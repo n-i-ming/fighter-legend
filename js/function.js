@@ -132,6 +132,7 @@ var dropList=[]
 var damageList=[]
 var damageDrawList=[]
 function ResetFight(){
+    player.monsterLv=Math.min(player.monsterLv,100000)
     let x=n(1.1).pow(Math.min(player.monsterLv,5000))
     x=x.mul(n(1.2).pow(Math.max(0,Math.min(player.monsterLv-5000,5000))))
     x=x.mul(n(1.5).pow(Math.max(0,Math.min(player.monsterLv-10000,5000))))
