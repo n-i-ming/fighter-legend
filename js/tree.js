@@ -241,6 +241,11 @@ addLayer("tree-tab",{
                 str+="你总计拥有"+format(player.daggerPoint,0)+"点碎甲<br>"
                 str+="<br>"
             }
+            else if(player.nowBigTab=="丹药"){
+                str+="拥有丹药 "+format(player.pellet,0)+"<br>"
+                str+="丹药从5000级怪物起开始掉落<br>"
+                str+="<br>"
+            }
             return str
         }],
         ["display-text",function(){
@@ -413,6 +418,20 @@ addLayer("tree-tab",{
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 断匕×"+format(CalcDaggerNeed(i),0)+" <button onclick='UpgradeDagger("+i+",0)'>升阶</button>"
                     +"</td><td><button style='margin-left:-10px' onclick='UpgradeDagger("+i+",1)'>一键升阶</button></td>"
+                    str+="</tr>"
+                }
+                str+="</table>"
+            }
+            else if(player.nowBigTab=="丹药"){
+                str+="<table>"
+                for(let i=0;i<5;i++){
+                    str+="<tr>"
+                    str+="<td style='width:150px;text-align:left'>"+["一","二","三","四","五"][i]+"品丹药·"+player.pelletLv[i]+"个</td>"
+                    str+="<td style='width:150px;text-align:left'>攻击+"+format(n(1).add(0.05*(i+1)).pow(player.pelletLv[i]).sub(1).mul(100),0)+"%</td>"
+                    str+="<td style='width:150px;text-align:left'>生命+"+format(n(1).add(0.05*(i+1)).pow(player.pelletLv[i]).sub(1).mul(100),0)+"%</td>"
+                    str+="<td style='width:100px'></td>"
+                    str+="<td style='width:250px;text-align:right'>消耗 丹药×"+format(CalcPelletNeed(i),0)+" <button onclick='UpgradePellet("+i+",0)'>炼制</button>"
+                    +"</td><td><button style='margin-left:-10px' onclick='UpgradePellet("+i+",1)'>一键炼制</button></td>"
                     str+="</tr>"
                 }
                 str+="</table>"

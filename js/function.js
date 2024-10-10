@@ -40,6 +40,11 @@ function CalcAttribute(){
         player.atk=player.atk.mul(n(1.1).pow(Math.max(0,player.partLv[i])))
     }
 
+    for(let i=0;i<5;i++){
+        player.atk=player.atk.mul(n(1).add((i+1)*0.05).pow(player.pelletLv[i]))
+        player.hp=player.hp.mul(n(1).add((i+1)*0.05).pow(player.pelletLv[i]))
+    }
+
     player.hp=player.hp.mul(n(2).pow(player.orbLv))
 
     player.atkSpeed=5
@@ -256,7 +261,9 @@ function DealFight(dif){
         player.monsterAtkTime+=dif
     }
     for(let i=0;i<4;i++){
-        player.animalAtkTime[i]+=dif*(random()+0.5)
+        if(player.animalLv[i]>=1){
+            player.animalAtkTime[i]+=dif*(random()+0.5)
+        }
     }
     for(let i=0;i<4;i++){
         if(player.partLv[i]>=0){
@@ -930,6 +937,34 @@ function UpgradeDagger(id,type){
             }
             else{
                 logs.push("断匕不足")
+                return
+            }
+        }
+    }
+}
+function CalcPelletNeed(id){
+    return CalcNeed(player.pelletLv[id]*(id+1))
+}
+function UpgradePellet(id,type){
+    if(type==0){
+        if(player.pellet.gte(CalcPelletNeed(id))){
+            logs.push("消耗 丹药×"+format(CalcPelletNeed(id))+" 成功炼制"+["一","二","三","四","五"][id]+"品丹药")
+            player.pellet=player.pellet.sub(CalcPelletNeed(id))
+            player.pelletLv[id]+=1
+        }
+        else{
+            logs.push("丹药不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.pellet.gte(CalcPelletNeed(id))){
+                logs.push("消耗 丹药×"+format(CalcPelletNeed(id))+" 成功炼制"+["一","二","三","四","五"][id]+"品丹药")
+                player.pellet=player.pellet.sub(CalcPelletNeed(id))
+                player.pelletLv[id]+=1
+            }
+            else{
+                logs.push("丹药不足")
                 return
             }
         }
