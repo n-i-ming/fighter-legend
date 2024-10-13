@@ -126,7 +126,7 @@ function CalcAttribute(){
         player.swordPer=n(1.02)
     }
 
-    player.swordPower=player.swordPer.pow(Math.floor(player.swordLv/10)).min(1000)
+    player.swordPower=player.swordPer.pow(n(Math.floor(player.swordLv/10)).pow(0.6))
 
     player.expMul=player.expMul.mul(n(1).add(0.01*player.orbLv))
     player.moneyMul=player.moneyMul.mul(n(2).pow(player.orb1Lv))
@@ -189,7 +189,12 @@ function DealDamage(str,dmg,extra){
     damageList.push([str,random()*(-150)+50,random()*(-100)-20,n(dmg),0,extra])
     if(str=="me"){
         player.daggerLevel=player.daggerLevel.add(player.daggerPoint)
-        player.monsterHp=player.monsterHp.sub(dmg)
+        if(extra[0]=="sword"){
+            player.monsterHp=player.monsterHp.div(player.swordPower)
+        }
+        else{
+            player.monsterHp=player.monsterHp.sub(dmg)
+        }
         if(player.monsterHp.lt(0)){
             player.monsterLv+=1
             ResetFight()
