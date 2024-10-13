@@ -142,7 +142,6 @@ var dropList=[]
 var damageList=[]
 var damageDrawList=[]
 function ResetFight(){
-    player.monsterLv=Math.min(player.monsterLv,100000)
     let x=n(1.1).pow(Math.min(player.monsterLv,5000))
     x=x.mul(n(1.2).pow(Math.max(0,Math.min(player.monsterLv-5000,5000))))
     x=x.mul(n(1.5).pow(Math.max(0,Math.min(player.monsterLv-10000,5000))))
@@ -163,7 +162,10 @@ function ResetFight(){
     x=x.mul(n(40).pow(Math.max(0,Math.min(player.monsterLv-85000,5000))))
     x=x.mul(n(50).pow(Math.max(0,Math.min(player.monsterLv-90000,5000))))
     x=x.mul(n(75).pow(Math.max(0,Math.min(player.monsterLv-95000,5000))))
-    x=x.mul(n(100).pow(Math.max(0,Math.min(player.monsterLv-100000,1000000000))))
+    x=x.mul(n(100).pow(Math.max(0,Math.min(player.monsterLv-100000,5000))))
+    if(player.monsterLv>=100000){
+        x=x.mul(n(100).pow(n(player.monsterLv/100000).pow(5).sub(1).mul(100000)))
+    }
     player.monsterHp=x.mul(1000)
     player.monsterAtk=x
     player.hpnow=player.hp
@@ -233,9 +235,10 @@ function DealGet(dif){
     player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms).mul(player.moneyMul))
     let swordTimes=Math.floor(dif/player.swordCD)
     ResetFight()
-    for(let i=0;i<swordTimes;i++){
-        player.money=player.money.add(player.monsterHp.mul(player.swordPower.sub(1)).div(player.swordPower))
-        player.monsterHp=player.monsterHp.sub(player.monsterHp.mul(player.swordPower.sub(1)).div(player.swordPower))
+    while(swordTimes>player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber()){
+        console.log(player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber())
+        player.money=player.money.add(player.monsterHp)
+        swordTimes-=player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber()
         if(player.monsterHp.lt(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0]))))){
             player.monsterLv+=1
             ResetFight()
@@ -372,7 +375,7 @@ function DrawFight(){
     str+="<tr>"
     str+="<td style='width:150px;text-align:left'>你</td>"
     str+="<td style='width:300px;text-align:left'>　</td>"
-    str+="<td style='width:150px;text-align:right'>"+monsterName[Math.floor(player.monsterLv/1000)]+"</td>"
+    str+="<td style='width:150px;text-align:right'>"+monsterName[Math.min(100,Math.floor(player.monsterLv/1000))]+"</td>"
     str+="</tr>"
     str+="<tr>"
     if(player.shield.gt(0)) str+="<td style='width:150px;text-align:left'><text style='color:blue'>护盾 "+format(player.shield,0)+"</text></td>"
@@ -496,7 +499,8 @@ const ExpNeed=[
     [2.60e6,n(4.2e9)],[2.65e6,n(4.4e9)],[2.70e6,n(4.6e9)],[2.75e6,n(4.8e9)],[2.80e6,n(5.0e9)],[2.85e6,n(5.2e9)],[2.90e6,n(5.4e9)],[2.95e6,n(5.6e9)],[3.00e6,n(5.8e9)],
     [3.05e6,n(6.0e9)],[3.10e6,n(6.0e9)],[3.15e6,n(6.2e9)],[3.20e6,n(6.4e9)],[3.25e6,n(6.6e9)],[3.30e6,n(6.8e9)],[3.35e6,n(7.0e9)],[3.4e6,n(7.5e9)],[3.5e6,n(8.0e9)],
     [3.6e6,n(8.5e9)],[3.7e6,n(9.0e9)],[3.8e6,n(9.5e9)],[3.9e6,n(1.0e10)],[4.0e6,n(1.1e10)],[4.2e6,n(1.2e10)],[4.4e6,n(1.3e10)],[4.6e6,n(1.4e10)],[4.8e6,n(1.5e10)],
-    [5.0e6,n(1.6e10)],[5.2e6,n(1.7e10)],[5.4e6,n(1.8e10)],[5.6e6,n(1.9e10)],[5.8e6,n(2.0e10)],[6.0e6,n(2.1e10)],
+    [5.0e6,n(1.6e10)],[5.2e6,n(1.7e10)],[5.4e6,n(1.8e10)],[5.6e6,n(1.9e10)],[5.8e6,n(2.0e10)],[6.0e6,n(2.1e10)],[7e6,n(2.5e10)],[8e6,n(3e10)],[9e6,n(3.5e10)],
+    [1.0e7,n(4e10)],[1.1e7,n(4.5e10)],[1.2e7,n(5e10)],[1.3e7,n(6e10)],[1.4e7,n(7e10)],[1.5e7,n(8e10)],[2e7,n(1e11)]
 ]
 let lst=0
 function CalcExpNeed(x){
@@ -723,7 +727,12 @@ function UpgradeGem(id,type){
     }
     else{
         while(1){
-            if(player.gem.gte(CalcGemNeed(id))){
+            if(player.gem.gte(CalcGemNeed(id).mul(100))){
+                logs.push("消耗 宝石碎片×"+format(CalcGemNeed(id).mul(100))+" 成功合成"+(Math.floor(player.gemLv[id]/100)+1)+"阶"+["攻击","生命"][id]+"宝石")
+                player.gem=player.gem.sub(CalcGemNeed(id).mul(100))
+                player.gemLv[id]+=100
+            }
+            else if(player.gem.gte(CalcGemNeed(id))){
                 logs.push("消耗 宝石碎片×"+format(CalcGemNeed(id))+" 成功合成"+(Math.floor(player.gemLv[id]/100)+1)+"阶"+["攻击","生命"][id]+"宝石")
                 player.gem=player.gem.sub(CalcGemNeed(id))
                 player.gemLv[id]+=1

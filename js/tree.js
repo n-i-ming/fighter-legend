@@ -108,7 +108,7 @@ addLayer("tree-tab",{
                 str+="</table>"
             }
             else if(player.nowBigTab=="战斗"){
-                str+=`<br><div>正在挑战 ${monsterName[Math.floor(player.monsterLv/1000)]}·${player.monsterLv+1}级 <button onclick='player.fightSub=1'>掉落详细</button></div>`
+                str+=`<br><div>正在挑战 ${monsterName[Math.min(100,Math.floor(player.monsterLv/1000))]}·${player.monsterLv+1}级 <button onclick='player.fightSub=1'>掉落详细</button></div>`
                 if(player.fightSub==0){
                 }
                 else{
