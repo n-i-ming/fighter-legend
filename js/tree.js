@@ -63,6 +63,7 @@ addLayer("tree-tab",{
         let dif=(Date.now()/1e3-player.tmtmtm)
         // dif*=100
         player.tmtmtm=Date.now()/1e3
+        dif=Math.min(dif,8*3600)
         player.kuangbaoTime=Math.max(player.kuangbaoTime-dif,0)
         player.zhendangTime=Math.max(player.zhendangTime-dif,0)
         player.qiandaoTime=Math.min(Math.max(player.qiandaoTime-dif,0),player.qiandaoCD)
