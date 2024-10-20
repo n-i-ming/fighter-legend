@@ -244,10 +244,8 @@ function DealGet(dif){
         console.log(player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber())
         player.money=player.money.add(player.monsterHp)
         swordTimes-=player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber()
-        if(player.monsterHp.lt(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0]))))){
-            player.monsterLv+=1
-            ResetFight()
-        }
+        player.monsterLv+=1
+        ResetFight()
     }
     let ls=ThingList()
     for(let i=0;i<ls.length;i++){
