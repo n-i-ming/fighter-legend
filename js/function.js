@@ -126,7 +126,7 @@ function CalcAttribute(){
         player.swordPer=n(1.02)
     }
 
-    player.swordPower=player.swordPer.pow(n(Math.floor(player.swordLv/10)).pow(0.6))
+    player.swordPower=player.swordPer.pow(n(Math.floor(player.swordLv/10)))
 
     player.expMul=player.expMul.mul(n(1).add(0.01*player.orbLv))
     player.moneyMul=player.moneyMul.mul(n(2).pow(player.orb1Lv))
