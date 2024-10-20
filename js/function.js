@@ -2,8 +2,8 @@ function CalcAttribute(){
     player.atk=n(10).mul(player.lv+1)
     player.hp=n(100).mul(player.lv+1)
 
-    player.atk=player.atk.add(player.weaponLv[0]>=1?n(1000).mul(n(1.5).pow(player.weaponLv[0]-1)).mul(n(1.01).pow(player.weaponLv[1])):n(0))
-    player.hp=player.hp.add(player.clothLv[0]>=1?n(10000).mul(n(1.5).pow(player.clothLv[0]-1)).mul(n(1.01).pow(player.clothLv[1])):n(0))
+    player.atk=player.atk.add(player.weaponLv[0]>=1?n(1000).mul(n(1.5).add(n(0.05).mul(player.chaosLv[0])).pow(player.weaponLv[0]-1)).mul(n(1.01).pow(player.weaponLv[1])):n(0))
+    player.hp=player.hp.add(player.clothLv[0]>=1?n(10000).mul(n(1.5).add(n(0.05).mul(player.chaosLv[1])).pow(player.clothLv[0]-1)).mul(n(1.01).pow(player.clothLv[1])):n(0))
 
     player.atk=player.atk.mul(n(1.001).pow(player.lv))
     player.hp=player.hp.mul(n(1.001).pow(player.lv))
@@ -240,10 +240,9 @@ function DealGet(dif){
     player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms).mul(player.moneyMul))
     let swordTimes=Math.floor(dif/player.swordCD)
     ResetFight()
-    while(swordTimes>player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber()){
-        console.log(player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber())
+    while(swordTimes>player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).max(1).logBase(player.swordPower).toNumber()){
         player.money=player.money.add(player.monsterHp)
-        swordTimes-=player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).logBase(player.swordPower).toNumber()
+        swordTimes-=player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).max(1).logBase(player.swordPower).toNumber()
         player.monsterLv+=1
         ResetFight()
     }
@@ -503,7 +502,8 @@ const ExpNeed=[
     [3.05e6,n(6.0e9)],[3.10e6,n(6.0e9)],[3.15e6,n(6.2e9)],[3.20e6,n(6.4e9)],[3.25e6,n(6.6e9)],[3.30e6,n(6.8e9)],[3.35e6,n(7.0e9)],[3.4e6,n(7.5e9)],[3.5e6,n(8.0e9)],
     [3.6e6,n(8.5e9)],[3.7e6,n(9.0e9)],[3.8e6,n(9.5e9)],[3.9e6,n(1.0e10)],[4.0e6,n(1.1e10)],[4.2e6,n(1.2e10)],[4.4e6,n(1.3e10)],[4.6e6,n(1.4e10)],[4.8e6,n(1.5e10)],
     [5.0e6,n(1.6e10)],[5.2e6,n(1.7e10)],[5.4e6,n(1.8e10)],[5.6e6,n(1.9e10)],[5.8e6,n(2.0e10)],[6.0e6,n(2.1e10)],[7e6,n(2.5e10)],[8e6,n(3e10)],[9e6,n(3.5e10)],
-    [1.0e7,n(4e10)],[1.1e7,n(4.5e10)],[1.2e7,n(5e10)],[1.3e7,n(6e10)],[1.4e7,n(7e10)],[1.5e7,n(8e10)],[2e7,n(1e11)]
+    [1.0e7,n(4e10)],[1.1e7,n(4.5e10)],[1.2e7,n(5e10)],[1.3e7,n(6e10)],[1.4e7,n(7e10)],[1.5e7,n(8e10)],[2e7,n(1e11)],[2.5e7,n(1.5e11)],[3e7,n(2e11)],[3.5e7,n(2.5e11)],
+    [4e7,n(3e11)],[5e7,n(4e11)]
 ]
 let lst=0
 function CalcExpNeed(x){
@@ -977,6 +977,34 @@ function UpgradePellet(id,type){
             }
             else{
                 logs.push("丹药不足")
+                return
+            }
+        }
+    }
+}
+function CalcChaosNeed(id){
+    return CalcNeed(Math.pow(player.chaosLv[id],1.5)*5).mul(10)
+}
+function UpgradeChaos(id,type){
+    if(type==0){
+        if(player.chaos.gte(CalcChaosNeed(id))){
+            logs.push("消耗 混沌晶石×"+format(CalcChaosNeed(id))+" 成功升级 混沌"+["武器","盔甲"][id])
+            player.chaos=player.chaos.sub(CalcChaosNeed(id))
+            player.chaosLv[id]+=1
+        }
+        else{
+            logs.push("混沌晶石不足")
+        }
+    }
+    else{
+        while(1){
+            if(player.chaos.gte(CalcChaosNeed(id))){
+                logs.push("消耗 混沌晶石×"+format(CalcChaosNeed(id))+" 成功升级 混沌"+["武器","盔甲"][id])
+                player.chaos=player.chaos.sub(CalcChaosNeed(id))
+                player.chaosLv[id]+=1
+            }
+            else{
+                logs.push("混沌晶石不足")
                 return
             }
         }
