@@ -9,10 +9,10 @@ function CalcAttribute(){
     player.hp=player.hp.mul(n(1.001).pow(player.lv))
 
     for(let i=0;i<4;i++){
-        player.hp=player.hp.mul(n(1).add(player.animalLv[i]==0?0:n(0.5).mul(n(1.1).pow(player.animalLv[i]-1)),0))
+        player.hp=player.hp.mul(n(1).add(player.animalLv[i]==0?0:n(0.5).mul(n(1.1).mul(n(1.005).pow(player.chaosLv[3])).pow(player.animalLv[i]-1)),0))
     }
     for(let i=0;i<5;i++){
-        player.atk=player.atk.mul(n(1).add(player.skillLv[i]==0?0:n(0.5).mul(n(1.1).pow(player.skillLv[i]-1)),0))
+        player.atk=player.atk.mul(n(1).add(player.skillLv[i]==0?0:n(0.5).mul(n(1.1).mul(n(1.004).pow(player.chaosLv[2])).pow(player.skillLv[i]-1)),0))
     }
 
     player.atk=player.atk.mul(n(1).add(CalcGemMul(0).div(100)))
@@ -240,9 +240,9 @@ function DealGet(dif){
     player.money=player.money.add(n(player.atk).mul(player.expmoneyMul).mul(tms).mul(player.moneyMul))
     let swordTimes=Math.floor(dif/player.swordCD)
     ResetFight()
-    while(swordTimes>player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).max(1).logBase(player.swordPower).toNumber()){
+    while(swordTimes>player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).mul(n(1.004).pow(player.chaosLv[2])).pow(player.skillLv[0])))).max(1).logBase(player.swordPower).toNumber()){
         player.money=player.money.add(player.monsterHp)
-        swordTimes-=player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).pow(player.skillLv[0])))).max(1).logBase(player.swordPower).toNumber()
+        swordTimes-=player.monsterHp.div(player.atk.mul(n(5).mul(n(1.1).mul(n(1.004).pow(player.chaosLv[2])).pow(player.skillLv[0])))).max(1).logBase(player.swordPower).toNumber()
         player.monsterLv+=1
         ResetFight()
     }
@@ -336,7 +336,7 @@ function DealFight(dif){
             if(player.skillLv[i]>=1){
                 if(random()<=player.skillLuck/100){
                     hs=true
-                    damageDrawList.push(["me",0,"skill",i,n(5).mul(n(1.1).pow(player.skillLv[i])),0,0,1])
+                    damageDrawList.push(["me",0,"skill",i,n(5).mul(n(1.1).mul(n(1.004).pow(player.chaosLv[2])).pow(player.skillLv[i])),0,0,1])
                 }
             }
         }
@@ -347,7 +347,7 @@ function DealFight(dif){
     for(let i=0;i<4;i++){
         while(player.animalAtkTime[i]>=5/player.atkSpeed){
             player.animalAtkTime[i]-=5/player.atkSpeed
-            damageDrawList.push(["me",0,"animal",i,n(0.25).mul(n(1.1).pow(player.animalLv[i])),random()*(-20)+10,random()*(-25)+10,random()])
+            damageDrawList.push(["me",0,"animal",i,n(0.25).mul(n(1.1).mul(n(1.005).pow(player.chaosLv[3])).pow(player.animalLv[i])),random()*(-20)+10,random()*(-25)+10,random()])
         }
     }
     for(let i=0;i<4;i++){
@@ -714,7 +714,7 @@ function CalcGemMul(id){
     x=x.add(1).mul(x).div(2)
     x=x.mul(100)
     x=x.add((1+Math.floor(player.gemLv[id]/100))*(player.gemLv[id]-Math.floor(player.gemLv[id]/100)*100))
-    x=x.mul(n(1.5).pow(Math.floor(player.gemLv[id]/100)))
+    x=x.mul(n(1.5).mul(n(1.025).pow(player.chaosLv[4])).pow(Math.floor(player.gemLv[id]/100)))
     return x
 }
 function UpgradeGem(id,type){
@@ -988,7 +988,7 @@ function CalcChaosNeed(id){
 function UpgradeChaos(id,type){
     if(type==0){
         if(player.chaos.gte(CalcChaosNeed(id))){
-            logs.push("消耗 混沌晶石×"+format(CalcChaosNeed(id))+" 成功升级 混沌"+["武器","盔甲"][id])
+            logs.push("消耗 混沌晶石×"+format(CalcChaosNeed(id))+" 成功升级 混沌"+["武器","盔甲","技能","神兽","宝石"][id])
             player.chaos=player.chaos.sub(CalcChaosNeed(id))
             player.chaosLv[id]+=1
         }
@@ -999,7 +999,7 @@ function UpgradeChaos(id,type){
     else{
         while(1){
             if(player.chaos.gte(CalcChaosNeed(id))){
-                logs.push("消耗 混沌晶石×"+format(CalcChaosNeed(id))+" 成功升级 混沌"+["武器","盔甲"][id])
+                logs.push("消耗 混沌晶石×"+format(CalcChaosNeed(id))+" 成功升级 混沌"+["武器","盔甲","技能","神兽","宝石"][id])
                 player.chaos=player.chaos.sub(CalcChaosNeed(id))
                 player.chaosLv[id]+=1
             }

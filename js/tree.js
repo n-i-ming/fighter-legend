@@ -265,7 +265,7 @@ addLayer("tree-tab",{
             }
             else if(player.nowBigTab=="武器"){
                 str+="当前武器 "+weaponName[Math.min(player.weaponLv[0],99)]+(player.weaponLv[0]>=99?"·"+(player.weaponLv[0]-99)+"阶":"")+"·"+player.weaponLv[1]+"级<br>"
-                str+="攻击+"+format(player.weaponLv[0]>=1?n(1000).mul(n(1.5).add(n(0.05).mul(player.chaosLv[0])).pow(player.weaponLv[0]-1)).mul(n(1.01).pow(player.weaponLv[1])):n(0))+"<br><br>"
+                str+="攻击+"+format(player.weaponLv[0]>=1?n(1000).mul(n(1.5).mul(n(1.02).pow(player.chaosLv[0])).pow(player.weaponLv[0]-1)).mul(n(1.01).pow(player.weaponLv[1])):n(0))+"<br><br>"
                 if(player.weaponLv[0]>=1){
                     str+="升级需要 金钱×"+format(CalcWeaponNeed(0))+" <button onclick='UpgradeWeapon(1)'>升级</button>"
                     str+="<button onclick='UpgradeWeapon(2)' style='margin-left:2px'>连续升级</button><br><br>"
@@ -273,11 +273,11 @@ addLayer("tree-tab",{
                 str+="升阶需要 陨铁×"+format(CalcWeaponNeed(1))+" <button onclick='UpgradeWeapon(0)'>升阶</button>"
                 str+="<button onclick='UpgradeWeapon(3)' style='margin-left:2px'>连续升阶</button><br>"
                 str+="下一阶 "+weaponName[Math.min(player.weaponLv[0]+1,99)]+(player.weaponLv[0]+1>=99?"·"+(player.weaponLv[0]+1-99)+"阶":"")+"<br>"
-                str+="<br>每一阶令武器增益×"+format(n(1.5).add(n(0.05).mul(player.chaosLv[0])),2)+"<br>每一级令武器增益×1.01"
+                str+="<br>每一阶令武器增益×"+format(n(1.5).mul(n(1.02).pow(player.chaosLv[0])),2)+"<br>每一级令武器增益×1.01"
             }
             else if(player.nowBigTab=="盔甲"){
                 str+="当前盔甲 "+clothName[Math.min(player.clothLv[0],99)]+(player.clothLv[0]>=99?"·"+(player.clothLv[0]-99)+"阶":"")+"·"+player.clothLv[1]+"级<br>"
-                str+="生命+"+format(player.clothLv[0]>=1?n(10000).mul(n(1.5).add(n(0.05).mul(player.chaosLv[1])).pow(player.clothLv[0]-1)).mul(n(1.01).pow(player.clothLv[1])):n(0))+"<br><br>"
+                str+="生命+"+format(player.clothLv[0]>=1?n(10000).mul(n(1.5).mul(n(1.02).pow(player.chaosLv[1])).pow(player.clothLv[0]-1)).mul(n(1.01).pow(player.clothLv[1])):n(0))+"<br><br>"
                 if(player.clothLv[0]>=1){
                     str+="升级需要 金钱×"+format(CalcClothNeed(0))+" <button onclick='UpgradeCloth(1)'>升级</button>"
                     str+="<button onclick='UpgradeCloth(2)' style='margin-left:2px'>连续升级</button><br><br>"
@@ -285,7 +285,7 @@ addLayer("tree-tab",{
                 str+="升阶需要 陨铁×"+format(CalcClothNeed(1))+" <button onclick='UpgradeCloth(0)'>升阶</button>"
                 str+="<button onclick='UpgradeCloth(3)' style='margin-left:2px'>连续升阶</button><br>"
                 str+="下一阶 "+clothName[Math.min(player.clothLv[0]+1,99)]+(player.clothLv[0]+1>=99?"·"+(player.clothLv[0]+1-99)+"阶":"")+"<br>"
-                str+="<br>每一阶令盔甲增益×"+format(n(1.5).add(n(0.05).mul(player.chaosLv[1])),2)+"<br>每一级令盔甲增益×1.01"
+                str+="<br>每一阶令盔甲增益×"+format(n(1.5).mul(n(1.02).pow(player.chaosLv[1])),2)+"<br>每一级令盔甲增益×1.01"
             }
             else if(player.nowBigTab=="技能"){
                 str+="<table>"
@@ -293,8 +293,8 @@ addLayer("tree-tab",{
                     str+="<tr>"
                     str+="<td style='width:150px;text-align:left'>"+skillName[i]+"·"+player.skillLv[i]+"阶 "
                     str+="<text style='color:"+skillColor[i]+"'>■</td>"
-                    str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
-                    str+="<td style='width:150px;text-align:left'>攻击+"+format(player.skillLv[i]==0?0:n(50).mul(n(1.1).pow(player.skillLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.skillLv[i]==0?0:n(500).mul(n(1.1).mul(n(1.004).pow(player.chaosLv[2])).pow(player.skillLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:150px;text-align:left'>攻击+"+format(player.skillLv[i]==0?0:n(50).mul(n(1.1).mul(n(1.004).pow(player.chaosLv[2])).pow(player.skillLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:300px;text-align:right'>消耗 技能书×"+format(CalcSkillNeed(i),0)+" <button onclick='UpgradeSkill("+i+",0)'>升阶</button>"
                     +"</td><td><button style='margin-left:-10px' onclick='UpgradeSkill("+i+",1)'>一键升阶</button></td>"
@@ -308,8 +308,8 @@ addLayer("tree-tab",{
                     str+="<tr>"
                     str+="<td style='width:150px;text-align:left'>"+animalName[i]+"·"+player.animalLv[i]+"阶 "
                     str+="<text style='color:"+animalColor[i]+"'>▶</text></td>"
-                    str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
-                    str+="<td style='width:150px;text-align:left'>生命+"+format(player.animalLv[i]==0?0:n(50).mul(n(1.1).pow(player.animalLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:200px;text-align:left'>伤害系数"+format(player.animalLv[i]==0?0:n(25).mul(n(1.1).mul(n(1.005).pow(player.chaosLv[3])).pow(player.animalLv[i]-1)),0)+"%</td>"
+                    str+="<td style='width:150px;text-align:left'>生命+"+format(player.animalLv[i]==0?0:n(50).mul(n(1.1).mul(n(1.005).pow(player.chaosLv[3])).pow(player.animalLv[i]-1)),0)+"%</td>"
                     str+="<td style='width:100px'></td>"
                     str+="<td style='width:250px;text-align:right'>消耗 兽符×"+format(CalcAnimalNeed(i),0)+" <button onclick='UpgradeAnimal("+i+",0)'>升阶</button>"
                     +"</td><td><button style='margin-left:-10px' onclick='UpgradeAnimal("+i+",1)'>一键升阶</button></td>"
@@ -340,7 +340,7 @@ addLayer("tree-tab",{
                 +"/100)</td><td style='width:150px;text-align:left'>生命+"+format(CalcGemMul(1),0)+"%</td>"
                 +"<td style='width:300px;text-align:right'>消耗宝石碎片×"+format(CalcGemNeed(1),0)+"<button onclick='UpgradeGem(1,0)'>合成</button></td><td><button style='margin-left:-10px' onclick='UpgradeGem(1,1)'>连续合成</button></td></tr>"
                 str+="</table>"
-                str+="<br>每一阶宝石合成满以后提升对应属性1.5倍"
+                str+="<br>每一阶宝石合成满以后提升对应属性"+format(n(1.5).mul(n(1.025).pow(player.chaosLv[4])))+"倍"
             }
             else if(player.nowBigTab=="破灭"){
                 str+="<table>"
@@ -445,11 +445,20 @@ addLayer("tree-tab",{
             else if(player.nowBigTab=="混沌"){
                 str+="<table>"
                 str+="<tr><td style='width:200px;text-align:left'>混沌武器·"+player.chaosLv[0]+"级</td>"
-                str+="<td style='width:300px;text-align:left'>每阶武器独立增益增加+"+format(n(0.05).mul(player.chaosLv[0]),2)+"×</td>"
+                str+="<td style='width:300px;text-align:left'>每阶武器独立增益×"+format(n(1.02).pow(player.chaosLv[0]),2)+"</td>"
                 str+="<td style='width:250px;text-align:right'>消耗 混沌晶石×"+format(CalcChaosNeed(0),0)+"</td><td><button onclick='UpgradeChaos(0,0)'>升级</button></td><td><button style='margin-left:-10px' onclick='UpgradeChaos(0,1)'>连续升级</button></td></tr>"
                 str+="<tr><td style='width:200px;text-align:left'>混沌盔甲·"+player.chaosLv[1]+"级</td>"
-                str+="<td style='width:300px;text-align:left'>每阶盔甲独立增益增加+"+format(n(0.05).mul(player.chaosLv[1]),2)+"×</td>"
+                str+="<td style='width:300px;text-align:left'>每阶盔甲独立增益×"+format(n(1.02).pow(player.chaosLv[1]),2)+"</td>"
                 str+="<td style='width:250px;text-align:right'>消耗 混沌晶石×"+format(CalcChaosNeed(1),0)+"</td><td><button onclick='UpgradeChaos(1,0)'>升级</button></td><td><button style='margin-left:-10px' onclick='UpgradeChaos(1,1)'>连续升级</button></td></tr>"
+                str+="<tr><td style='width:200px;text-align:left'>混沌技能·"+player.chaosLv[2]+"级</td>"
+                str+="<td style='width:300px;text-align:left'>每阶技能独立增益×"+format(n(1.004).pow(player.chaosLv[2]),2)+"</td>"
+                str+="<td style='width:250px;text-align:right'>消耗 混沌晶石×"+format(CalcChaosNeed(2),0)+"</td><td><button onclick='UpgradeChaos(2,0)'>升级</button></td><td><button style='margin-left:-10px' onclick='UpgradeChaos(2,1)'>连续升级</button></td></tr>"
+                str+="<tr><td style='width:200px;text-align:left'>混沌神兽·"+player.chaosLv[3]+"级</td>"
+                str+="<td style='width:300px;text-align:left'>每阶神兽独立增益×"+format(n(1.005).pow(player.chaosLv[3]),2)+"</td>"
+                str+="<td style='width:250px;text-align:right'>消耗 混沌晶石×"+format(CalcChaosNeed(3),0)+"</td><td><button onclick='UpgradeChaos(3,0)'>升级</button></td><td><button style='margin-left:-10px' onclick='UpgradeChaos(3,1)'>连续升级</button></td></tr>"
+                str+="<tr><td style='width:200px;text-align:left'>混沌宝石·"+player.chaosLv[4]+"级</td>"
+                str+="<td style='width:300px;text-align:left'>每阶宝石独立增益×"+format(n(1.025).pow(player.chaosLv[4]),2)+"</td>"
+                str+="<td style='width:250px;text-align:right'>消耗 混沌晶石×"+format(CalcChaosNeed(4),0)+"</td><td><button onclick='UpgradeChaos(4,0)'>升级</button></td><td><button style='margin-left:-10px' onclick='UpgradeChaos(4,1)'>连续升级</button></td></tr>"
                 str+="</table>"
             }
             return str
